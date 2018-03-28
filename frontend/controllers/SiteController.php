@@ -72,7 +72,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $connection = \Yii::$app->db;
+        /*$connection = \Yii::$app->db;
         $fechat = date('Ymd',time());
         $mes_inicio = date('Ym',time())."01";
         $mes_final = date('Ymt',time());
@@ -89,6 +89,9 @@ class SiteController extends Controller
             'presupuestos' => $orden['Presupuesto'],
             'devoluciones' => $orden['Devolucion_Venta'],
             'pedidos' => $orden['Pedido'],
+        ]);*/
+        
+        return $this->render('index', [
         ]);
     }
 

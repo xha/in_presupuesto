@@ -11,6 +11,10 @@ use yii\widgets\ActiveForm;
 <div class="partida-form">
 
     <?php $form = ActiveForm::begin(); ?>
+    
+    <center class="form-group">
+        <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    </center>
 
     <?= $form->field($model, 'id_partida')->textInput() ?>
 
@@ -26,13 +30,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'descripcion')->textInput() ?>
 
-    <?= $form->field($model, 'activo')->textInput() ?>
+    <?= $form->field($model, 'activo')->dropDownList(['1' => 'SI', '0' => 'NO']); ?>
 
-    <?= $form->field($model, 'movimiento')->textInput() ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-    </div>
+    <?= $form->field($model, 'activo')->dropDownList(['1' => 'SI', '0' => 'NO']); ?>
 
     <?php ActiveForm::end(); ?>
 

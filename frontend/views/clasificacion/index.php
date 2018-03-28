@@ -7,30 +7,30 @@ use yii\grid\GridView;
 /* @var $searchModel frontend\Models\ClasificacionSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Clasificacions';
+$this->title = 'Clasificaciones';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="clasificacion-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <p>
-        <?= Html::a('Create Clasificacion', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Crear Clasificación', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'rowOptions' => function ($model, $index, $widget, $grid){
+            if($model->activo == 0) return ['style' => 'background-color: #EEE'];
+        },
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            //['class' => 'yii\grid\SerialColumn'],
 
             'id_clasificacion',
             'codigo',
             'descripcion',
-            'detalle',
+            //'detalle',
             'nivel',
-            //'activo',
+            'activo:boolean',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

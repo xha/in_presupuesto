@@ -7,29 +7,29 @@ use yii\grid\GridView;
 /* @var $searchModel backend\Models\UnidadSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Unidads';
+$this->title = 'Unidades';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="unidad-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <p>
-        <?= Html::a('Create Unidad', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Crear Unidad', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'rowOptions' => function ($model, $index, $widget, $grid){
+            if($model->activo == 0) return ['style' => 'background-color: #EEE'];
+        },
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            //['class' => 'yii\grid\SerialColumn'],
 
             'id_unidad',
             'descripcion',
-            'principal',
             'responsable',
-            'activo',
+            'principal:boolean',
+            'activo:boolean',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

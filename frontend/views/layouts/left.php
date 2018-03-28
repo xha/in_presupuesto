@@ -26,36 +26,20 @@
         </form>
         <!-- /.search form -->
         <?php
-            if (Yii::$app->user->isGuest) {
+            /*if (Yii::$app->user->isGuest) {
                 $menuItems[] = ['label' => 'Login', 'icon' => 'circle-o', 'url' => ['../../backend/web/site/login']];
                 $menuItems[] = ['label' => 'Registro', 'icon' => 'file-o', 'url' => ['../../backend/web/site/register']];
                 $menuItems[] = ['label' => 'Recuperar Usuario', 'icon' => 'unlock', 'url' => ['../../backend/web/site/recuperar']];
-            } else {
+            } else {*/
                 $menuItems[] = ['label' => 'Configuración', 'icon' => 'unlock', 'url' => ['../../backend/web/site/']];
                 $menuItems[] = ['label' => 'Tablas Básicas', 'icon' => 'folder-o', 'url' => '#',
                                     'items' => [
-                                        ['label' => 'Proveedores', 'icon' => 'check', 'url' => ['../../frontend/web/proveedor']],
-                                        ['label' => 'Clientes', 'icon' => 'check', 'url' => ['../../frontend/web/cliente']],
-                                        ['label' => 'Productos', 'icon' => 'check', 'url' => ['../../frontend/web/producto']],
-                                        ['label' => 'Servicios', 'icon' => 'check', 'url' => ['../../frontend/web/servicio']],
-                                        ['label' => 'Impuestos', 'icon' => 'check', 'url' => ['../../frontend/web/impuesto']],
-                                        ['label' => 'Ubicaciones', 'icon' => 'check', 'url' => ['../../frontend/web/ubicacion']],
+                                        ['label' => 'Empresa', 'icon' => 'check', 'url' => ['../../frontend/web/empresa/update?id=1']],
+                                        ['label' => 'Catálogo Presupuestario', 'icon' => 'check', 'url' => ['../../frontend/web/partida']],
+                                        ['label' => 'Clasificación', 'icon' => 'check', 'url' => ['../../frontend/web/clasificacion']],
                                 ],];
-                $menuItems[] = ['label' => 'Compras', 'options' => ['class' => 'header']];
-                $menuItems[] = ['label' => 'Orden de C/S', 'icon' => 'adjust', 'url' => ['../../frontend/web/compra/?TipoCom=L']];
-                $menuItems[] = ['label' => 'Compras', 'icon' => 'balance-scale', 'url' => ['../../frontend/web/compra/?TipoCom=H']];
-                $menuItems[] = ['label' => 'Cotizaciones', 'icon' => 'folder-open', 'url' => ['../../frontend/web/compra/?TipoCom=S']];
-                $menuItems[] = ['label' => 'Devolución de Compras', 'icon' => 'battery-empty', 'url' => ['../../frontend/web/compra/?TipoCom=I']];
-                $menuItems[] = ['label' => 'Notas de Entrega Cp', 'icon' => 'calculator', 'url' => ['../../frontend/web/compra/?TipoCom=J']];
-                $menuItems[] = ['label' => 'Devolución de NE Cp', 'icon' => 'folder', 'url' => ['../../frontend/web/compra/?TipoCom=K']];
-                $menuItems[] = ['label' => 'Ventas', 'options' => ['class' => 'header']];
-                $menuItems[] = ['label' => 'Presupuestos', 'icon' => 'book', 'url' => ['../../frontend/web/venta/?TipoFac=F']];
-                $menuItems[] = ['label' => 'Facturación', 'icon' => 'bar-chart', 'url' => ['../../frontend/web/venta/?TipoFac=A']];
-                $menuItems[] = ['label' => 'Pedidos', 'icon' => 'star', 'url' => ['../../frontend/web/venta/?TipoFac=E']];
-                $menuItems[] = ['label' => 'Devolución de Ventas', 'icon' => 'ban', 'url' => ['../../frontend/web/venta/?TipoFac=B']];
-                $menuItems[] = ['label' => 'Notas de Entrega Vta', 'icon' => 'bandcamp', 'url' => ['../../frontend/web/venta/?TipoFac=C']];
-                $menuItems[] = ['label' => 'Devolución de NE Vta', 'icon' => 'battery', 'url' => ['../../frontend/web/venta/?TipoFac=D']];
-            }
+                //$menuItems[] = ['label' => 'Devolución de NE Vta', 'icon' => 'battery', 'url' => ['../../frontend/web/venta/?TipoFac=D']];
+            //}
         ?>
         <?= dmstr\widgets\Menu::widget(
             [
