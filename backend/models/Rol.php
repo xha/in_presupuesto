@@ -18,7 +18,7 @@ class Rol extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'ISOP_Rol';
+        return 'ISPR_Rol';
     }
 
     /**

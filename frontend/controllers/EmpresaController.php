@@ -1,19 +1,18 @@
 <?php
 
-namespace backend\controllers;
+namespace frontend\controllers;
 
 use Yii;
-use backend\models\Pregunta;
-use backend\models\PreguntaSearch;
-use common\models\AccessHelpers;
+use frontend\Models\Empresa;
+use frontend\Models\EmpresaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * PreguntaController implements the CRUD actions for Pregunta model.
+ * EmpresaController implements the CRUD actions for Empresa model.
  */
-class PreguntaController extends Controller
+class EmpresaController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,22 +29,13 @@ class PreguntaController extends Controller
         ];
     }
 
-    public function beforeAction($action)
-    {
-        if (!parent::beforeAction($action)) {
-            return false;
-        }
-
-        return AccessHelpers::chequeo();
-    }
-
     /**
-     * Lists all Pregunta models.
+     * Lists all Empresa models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new PreguntaSearch();
+        $searchModel = new EmpresaSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -55,9 +45,10 @@ class PreguntaController extends Controller
     }
 
     /**
-     * Displays a single Pregunta model.
+     * Displays a single Empresa model.
      * @param integer $id
      * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
@@ -67,71 +58,70 @@ class PreguntaController extends Controller
     }
 
     /**
-     * Creates a new Pregunta model.
+     * Creates a new Empresa model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Pregunta();
+        $model = new Empresa();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_pregunta]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            return $this->redirect(['view', 'id' => $model->id_empresa]);
         }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
     /**
-     * Updates an existing Pregunta model.
+     * Updates an existing Empresa model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_pregunta]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            return $this->redirect(['view', 'id' => $model->id_empresa]);
         }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
     }
 
     /**
-     * Deletes an existing Pregunta model.
+     * Deletes an existing Empresa model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
     {
-        $connection = \Yii::$app->db;
-        $query = "UPDATE ISPR_Pregunta SET activo=0 WHERE id_pregunta=".$id;
-        $connection->createCommand($query)->query();
-        //$this->findModel($id)->delete();
+        $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the Pregunta model based on its primary key value.
+     * Finds the Empresa model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Pregunta the loaded model
+     * @return Empresa the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Pregunta::findOne($id)) !== null) {
+        if (($model = Empresa::findOne($id)) !== null) {
             return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

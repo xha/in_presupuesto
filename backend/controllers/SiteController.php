@@ -125,7 +125,7 @@ class SiteController extends Controller
                 $table->id_rol = 1;
                 $table->id_pregunta = $model->id_pregunta;
                 $table->respuesta_seguridad = $model->respuesta_seguridad;
-                $table->CodUbic = $model->CodUbic;
+                $table->id_unidad = $model->id_unidad;
                 $table->activo = 0;
                 $table->clave = md5("is".$model->clave);
                 
@@ -172,7 +172,7 @@ class SiteController extends Controller
                 
                 $connection = \Yii::$app->db;
 
-                $query = "UPDATE ISOP_usuario
+                $query = "UPDATE ISPR_usuario
                 SET clave='".$table->clave."'
                 OUTPUT INSERTED.clave
                 where id_usuario='".$table->id_usuario."' and clave='".$table->clave_actual."'";
@@ -218,7 +218,7 @@ class SiteController extends Controller
             $clave = md5("is".$model->clave);
             $connection = \Yii::$app->db;
 
-            $query = "UPDATE ISOP_usuario
+            $query = "UPDATE ISPR_usuario
             SET clave='$clave'
             where usuario='".$model->usuario."' and id_pregunta=".$model->id_pregunta." and respuesta_seguridad='".$model->respuesta_seguridad."' and correo='".$model->correo."'";
             $msg = $connection->createCommand($query)->execute();
@@ -243,7 +243,7 @@ class SiteController extends Controller
         $msg = null;
         $data = array();
         
-        $query = "SELECT usuario FROM ISOP_USUARIO";
+        $query = "SELECT usuario FROM ISPR_USUARIO";
         $data1 = $connection->createCommand($query)->queryAll();
 
         for($i=0;$i<count($data1);$i++) {
@@ -257,8 +257,8 @@ class SiteController extends Controller
                 $extra = ",clave='".$extra."'";
             }
 
-            $query = "UPDATE ISOP_USUARIO
-            SET id_rol=".$model->id_rol.", CodUbic='".$model->CodUbic."', activo=".$model->activado." $extra
+            $query = "UPDATE ISPR_USUARIO
+            SET id_rol=".$model->id_rol.", id_unidad='".$model->id_unidad."', activo=".$model->activado." $extra
             where usuario='".$model->usuario."'";
             
             $msg = $connection->createCommand($query)->execute();
@@ -280,9 +280,9 @@ class SiteController extends Controller
     public function actionBuscaUsuarios() {
         $connection = \Yii::$app->db;
         
-        $query = "select u.usuario, u.cedula, CONCAT(u.apellido,', ',u.nombre) as nombre,d.Descrip as ubicacion, r.descripcion as rol, u.activo
-            from ISOP_Usuario u, SADEPO d, ISOP_Rol r
-            WHERE u.CodUbic=d.CodUbic and r.id_rol=u.id_rol
+        $query = "select u.usuario, u.cedula, CONCAT(u.apellido,', ',u.nombre) as nombre,d.descripcion as ubicacion, r.descripcion as rol, u.activo
+            from ISPR_Usuario u, ISPR_Unidad d, ISPR_Rol r
+            WHERE u.id_unidad=d.id_unidad and r.id_rol=u.id_rol
             ORDER BY ubicacion,nombre";
 
         $pendientes = $connection->createCommand($query)->queryAll();

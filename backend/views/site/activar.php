@@ -5,7 +5,7 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\ArrayHelper;
 use common\models\Usuario;
 use backend\models\Rol;
-use backend\models\Sadepo;
+use backend\models\Unidad;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Rol */
@@ -35,7 +35,7 @@ $this->registerCssFile('../../../frontend/web/css/general.css');
 
     <?= $form->field($model, 'id_rol')->dropDownList(ArrayHelper::map(Rol::find()->where(['activo' => '1'])->OrderBy('descripcion')->all(), 'id_rol', 'descripcion')); ?>
     
-    <?= $form->field($model, 'CodUbic')->dropDownList(ArrayHelper::map(Sadepo::find()->where(['activo' => '1'])->OrderBy('Descrip')->all(), 'CodUbic', 'CodUbic', 'Descrip')); ?>
+    <?= $form->field($model, 'id_unidad')->dropDownList(ArrayHelper::map(Unidad::find()->where(['activo' => '1'])->OrderBy('descripcion')->all(), 'id_unidad', 'id_unidad', 'descripcion')); ?>
 
     <?= $form->field($model, 'activado')->dropDownList(['1' => 'SI', '0' => 'NO']); ?>
 

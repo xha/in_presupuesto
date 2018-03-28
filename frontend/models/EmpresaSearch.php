@@ -1,16 +1,16 @@
 <?php
 
-namespace backend\models;
+namespace frontend\Models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Usuario;
+use frontend\Models\Empresa;
 
 /**
- * AccionSearch represents the model behind the search form about `app\models\Accion`.
+ * EmpresaSearch represents the model behind the search form of `frontend\Models\Empresa`.
  */
-class UsuarioSearch extends Usuario
+class EmpresaSearch extends Empresa
 {
     /**
      * @inheritdoc
@@ -18,9 +18,8 @@ class UsuarioSearch extends Usuario
     public function rules()
     {
         return [
-            [['id_usuario', 'id_pregunta', 'id_rol', 'id_unidad'], 'integer'],
-            [['usuario', 'correo', 'cedula', 'nombre', 'apellido',], 'safe'],
-            [['activo'], 'boolean'],
+            [['id_empresa', 'tipo_ente', 'activo'], 'integer'],
+            [['codigo_onapre', 'descripcion', 'organismo'], 'safe'],
         ];
     }
 
@@ -42,7 +41,7 @@ class UsuarioSearch extends Usuario
      */
     public function search($params)
     {
-        $query = Usuario::find();
+        $query = Empresa::find();
 
         // add conditions that should always apply here
 
@@ -60,17 +59,14 @@ class UsuarioSearch extends Usuario
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id_usuario' => $this->id_usuario,
-            'id_unidad' => $this->id_unidad,
-            'id_pregunta' => $this->id_pregunta,
-            'id_rol' => $this->id_rol,
+            'id_empresa' => $this->id_empresa,
+            'tipo_ente' => $this->tipo_ente,
             'activo' => $this->activo,
         ]);
 
-        $query->andFilterWhere(['like', 'correo', $this->correo]);
-        $query->andFilterWhere(['like', 'cedula', $this->cedula]);
-        $query->andFilterWhere(['like', 'nombre', $this->nombre]);
-        $query->andFilterWhere(['like', 'apellido', $this->apellido]);
+        $query->andFilterWhere(['like', 'codigo_onapre', $this->codigo_onapre])
+            ->andFilterWhere(['like', 'descripcion', $this->descripcion])
+            ->andFilterWhere(['like', 'organismo', $this->organismo]);
 
         return $dataProvider;
     }

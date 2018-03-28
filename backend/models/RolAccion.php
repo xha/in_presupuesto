@@ -24,7 +24,7 @@ class RolAccion extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'ISOP_RolAccion';
+        return 'ISPR_RolAccion';
     }
 
     /**

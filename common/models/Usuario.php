@@ -3,6 +3,7 @@
 namespace common\models;
 use backend\models\Pregunta;
 use backend\models\Rol;
+use backend\models\Unidad;
 
 use Yii;
 
@@ -37,7 +38,7 @@ class Usuario extends \yii\db\ActiveRecord
     
     public static function tableName()
     {
-        return 'ISOP_Usuario';
+        return 'ISPR_Usuario';
     }
 
     /**
@@ -47,18 +48,18 @@ class Usuario extends \yii\db\ActiveRecord
     {
         return [
             [['id_usuario', 'usuario', 'correo', 'cedula', 'clave', 'nombre', 'apellido', 'id_pregunta'], 'required'],
-            [['id_usuario', 'activo', 'id_rol', 'id_pregunta'], 'integer'],
+            [['id_usuario', 'activo', 'id_rol', 'id_pregunta', 'id_unidad'], 'integer'],
             [['fecha_registro'], 'safe'],
             [['usuario'], 'unique'],
             [['usuario', 'telefono'], 'string', 'max' => 20],
             [['correo', 'nombre', 'apellido'], 'string', 'max' => 100],
             [['cedula'], 'string', 'max' => 15],
             [['clave'], 'string', 'max' => 250],
-            [['CodUbic'], 'string', 'max' => 10],
             [['sexo'], 'string', 'max' => 1],
             [['respuesta_seguridad'], 'string', 'max' => 1000],
             [['id_pregunta'], 'exist', 'skipOnError' => true, 'targetClass' => Pregunta::className(), 'targetAttribute' => ['id_pregunta' => 'id_pregunta']],
             [['id_rol'], 'exist', 'skipOnError' => true, 'targetClass' => Rol::className(), 'targetAttribute' => ['id_rol' => 'id_rol']],
+            [['id_unidad'], 'exist', 'skipOnError' => true, 'targetClass' => Unidad::className(), 'targetAttribute' => ['id_unidad' => 'id_unidad']],
         ];
     }
 
@@ -81,7 +82,7 @@ class Usuario extends \yii\db\ActiveRecord
             'activo' => 'Activo',
             'id_rol' => 'Rol',
             'id_pregunta' => 'Pregunta',
-            'CodUbic' => 'Ubicación Física',
+            'id_unidad' => 'Ubicación',
         ];
     }
 
@@ -99,5 +100,10 @@ class Usuario extends \yii\db\ActiveRecord
     public function getIdRol()
     {
         return $this->hasOne(Rol::className(), ['id_rol' => 'id_rol']);
+    }
+    
+    public function getIdUnidad()
+    {
+        return $this->hasOne(Unidad::className(), ['id_unidad' => 'id_unidad']);
     }
 }

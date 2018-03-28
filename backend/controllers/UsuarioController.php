@@ -121,7 +121,7 @@ class UsuarioController extends Controller
     public function actionDelete($id)
     {
         $connection = \Yii::$app->db;
-        $query = "UPDATE ISOP_Usuario SET activo=0 WHERE id_usuario=".$id;
+        $query = "UPDATE ISPR_Usuario SET activo=0 WHERE id_usuario=".$id;
         $connection->createCommand($query)->query();
         //$this->findModel($id)->delete();
 

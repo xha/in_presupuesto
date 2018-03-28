@@ -8,7 +8,7 @@ class AccessHelpers {
     public static function getAcceso($accion,$rol) {
         $connection = \Yii::$app->db;
         $sql = "SELECT u.usuario as nombre
-                FROM ISOP_Usuario u, ISOP_RolAccion ra, ISOP_Accion a
+                FROM ISPR_Usuario u, ISPR_RolAccion ra, ISPR_Accion a
                 WHERE a.descripcion =:accion
                 AND ra.id_accion=a.id_accion
                 AND u.id_rol=ra.id_rol 

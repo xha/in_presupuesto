@@ -1,16 +1,16 @@
 <?php
 
-namespace backend\models;
+namespace frontend\Models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Usuario;
+use frontend\Models\Upa;
 
 /**
- * AccionSearch represents the model behind the search form about `app\models\Accion`.
+ * UpaSearch represents the model behind the search form of `frontend\Models\Upa`.
  */
-class UsuarioSearch extends Usuario
+class UpaSearch extends Upa
 {
     /**
      * @inheritdoc
@@ -18,9 +18,9 @@ class UsuarioSearch extends Usuario
     public function rules()
     {
         return [
-            [['id_usuario', 'id_pregunta', 'id_rol', 'id_unidad'], 'integer'],
-            [['usuario', 'correo', 'cedula', 'nombre', 'apellido',], 'safe'],
-            [['activo'], 'boolean'],
+            [['id_upa', 'id_clasificacion', 'id_unidad', 'asignacion'], 'integer'],
+            [['id_partida', 'denominacion_partida', 'descripcion_clasificacion', 'fecha', 'partida_origen', 'tipo_operacion'], 'safe'],
+            [['monto'], 'number'],
         ];
     }
 
@@ -42,7 +42,7 @@ class UsuarioSearch extends Usuario
      */
     public function search($params)
     {
-        $query = Usuario::find();
+        $query = Upa::find();
 
         // add conditions that should always apply here
 
@@ -60,17 +60,19 @@ class UsuarioSearch extends Usuario
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id_usuario' => $this->id_usuario,
+            'id_upa' => $this->id_upa,
+            'id_clasificacion' => $this->id_clasificacion,
             'id_unidad' => $this->id_unidad,
-            'id_pregunta' => $this->id_pregunta,
-            'id_rol' => $this->id_rol,
-            'activo' => $this->activo,
+            'monto' => $this->monto,
+            'fecha' => $this->fecha,
+            'asignacion' => $this->asignacion,
         ]);
 
-        $query->andFilterWhere(['like', 'correo', $this->correo]);
-        $query->andFilterWhere(['like', 'cedula', $this->cedula]);
-        $query->andFilterWhere(['like', 'nombre', $this->nombre]);
-        $query->andFilterWhere(['like', 'apellido', $this->apellido]);
+        $query->andFilterWhere(['like', 'id_partida', $this->id_partida])
+            ->andFilterWhere(['like', 'denominacion_partida', $this->denominacion_partida])
+            ->andFilterWhere(['like', 'descripcion_clasificacion', $this->descripcion_clasificacion])
+            ->andFilterWhere(['like', 'partida_origen', $this->partida_origen])
+            ->andFilterWhere(['like', 'tipo_operacion', $this->tipo_operacion]);
 
         return $dataProvider;
     }

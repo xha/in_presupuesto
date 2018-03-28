@@ -45,8 +45,8 @@ use backend\models\Sadepo;
     <?= $form->field($model, 'respuesta_seguridad')->textInput(['maxlength' => true]) ?>
     
     <label class="control-label">Ubicaci&oacute;n</label>
-    <?= Html::activeDropDownList($model, 'CodUbic',
-      ArrayHelper::map(Sadepo::find()->where(['Activo' => '1'])->OrderBy('Descrip')->all(), 'CodUbic', 'CodUbic', 'Descrip'), ['class'=>'form-control']) ?>
+    <?= Html::activeDropDownList($model, 'id_unidad',
+      ArrayHelper::map(Unidad::find()->where(['activo' => '1'])->OrderBy('descripcion')->all(), 'id_unidad', 'id_unidad', 'descripcion'), ['class'=>'form-control']) ?>
     <br />
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

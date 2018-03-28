@@ -18,7 +18,7 @@ class User extends ActiveRecord implements IdentityInterface
     
     public static function tableName()
     {
-        return 'ISOP_Usuario';
+        return 'ISPR_Usuario';
     }
 
     public static function findIdentity($id)

@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use backend\models\Pregunta;
-use backend\models\Sadepo;
+use backend\models\Unidad;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Usuario */
@@ -49,7 +49,7 @@ $this->title = 'Registro';
 
     <?= $form->field($model, 'telefono')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'CodUbic')->dropDownList(ArrayHelper::map(Sadepo::find()->where(['activo' => '1'])->OrderBy('Descrip')->all(), 'CodUbic', 'CodUbic', 'Descrip')); ?>
+    <?= $form->field($model, 'id_unidad')->dropDownList(ArrayHelper::map(Unidad::find()->where(['activo' => '1'])->OrderBy('descripcion')->all(), 'id_unidad', 'id_unidad', 'descripcion')); ?>
     
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

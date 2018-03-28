@@ -81,10 +81,10 @@ class RolAccionController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $detalle = explode("#",$_POST['i_items']);  
             
-            $query = "DELETE FROM ISOP_RolAccion WHERE id_rol=".$model->id_rol;
+            $query = "DELETE FROM ISPR_RolAccion WHERE id_rol=".$model->id_rol;
             $connection->createCommand($query)->query();
             for ($i=0;$i < count($detalle) - 1;$i++) {
-                $query = "INSERT INTO ISOP_RolAccion(id_rol,id_accion,modifica) 
+                $query = "INSERT INTO ISPR_RolAccion(id_rol,id_accion,modifica) 
                         VALUES (".$model->id_rol.",".$detalle[$i].",1)";
                 $connection->createCommand($query)->query();
             }
@@ -112,10 +112,10 @@ class RolAccionController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $detalle = explode("#",$_POST['i_items']);  
             
-            $query = "DELETE FROM ISOP_RolAccion WHERE id_rol=".$model->id_rol;
+            $query = "DELETE FROM ISPR_RolAccion WHERE id_rol=".$model->id_rol;
             $connection->createCommand($query)->query();
             for ($i=0;$i < count($detalle) - 1;$i++) {
-                $query = "INSERT INTO ISOP_RolAccion(id_rol,id_accion,modifica) 
+                $query = "INSERT INTO ISPR_RolAccion(id_rol,id_accion,modifica) 
                         VALUES (".$model->id_rol.",".$detalle[$i].",1)";
                 $connection->createCommand($query)->query();
             }
@@ -146,13 +146,13 @@ class RolAccionController extends Controller
         $extra="";
         if ($rol>0) {
             $query = "select a.id_accion, a.descripcion, r.id_rol
-                from ISOP_Accion a
-                left join ISOP_RolAccion r on a.id_accion=r.id_accion
+                from ISPR_Accion a
+                left join ISPR_RolAccion r on a.id_accion=r.id_accion
                 WHERE r.id_rol=$rol
                 ORDER BY a.descripcion,a.id_accion";
         } else {
             $query = "select id_accion, descripcion
-                from ISOP_Accion 
+                from ISPR_Accion 
                 WHERE activo=1
                 ORDER BY descripcion,id_accion";
         }
