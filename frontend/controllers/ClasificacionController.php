@@ -8,6 +8,8 @@ use frontend\Models\ClasificacionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\db\Query;
+use yii\helpers\Json;
 
 /**
  * ClasificacionController implements the CRUD actions for Clasificacion model.
@@ -104,7 +106,10 @@ class ClasificacionController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $connection = \Yii::$app->db;
+        $query = "UPDATE ISPR_Clasificacion SET activo=0 WHERE id_clasificacion=".$id;
+        $connection->createCommand($query)->query();
+        //$this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
@@ -123,5 +128,16 @@ class ClasificacionController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    
+    /**************** BUSQUEDAS ***********************************************************/ 
+    public function actionBuscarPadre($nivel) {
+        $connection = \Yii::$app->db;
+
+        $query = "SELECT * FROM ISPR_Clasificacion 
+                WHERE nivel=".$nivel." and activo=1
+                ORDER BY codigo,descripcion asc";
+        $pendientes = $connection->createCommand($query)->queryAll();
+        return Json::encode($pendientes);
     }
 }

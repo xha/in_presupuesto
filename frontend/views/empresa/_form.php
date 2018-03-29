@@ -22,7 +22,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'organismo')->textInput() ?>
 
-    <?= $form->field($model, 'tipo_ente')->textInput() ?>
+    <?= $form->field($model, 'tipo_ente')->dropDownList(['1' => 'Centralizado', '2' => 'Desentralizado Sin Fines Empresariales', '3' => 'Desentralizado Con Fines Empresariales']); ?>
 
     <?= $form->field($model, 'activo')->dropDownList(['1' => 'SI', '0' => 'NO']); ?>
 

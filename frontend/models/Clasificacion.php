@@ -34,7 +34,7 @@ class Clasificacion extends \yii\db\ActiveRecord
         return [
             [['codigo', 'descripcion', 'detalle'], 'string'],
             [['descripcion', 'detalle'], 'required'],
-            [['nivel', 'activo'], 'integer'],
+            [['nivel', 'padre', 'activo'], 'integer'],
         ];
     }
 
@@ -49,6 +49,7 @@ class Clasificacion extends \yii\db\ActiveRecord
             'descripcion' => 'Descripcion',
             'detalle' => 'Detalle',
             'nivel' => 'Nivel',
+            'padre' => 'Padre',
             'activo' => 'Activo',
         ];
     }

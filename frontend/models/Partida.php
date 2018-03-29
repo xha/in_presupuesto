@@ -36,8 +36,10 @@ class Partida extends \yii\db\ActiveRecord
     {
         return [
             [['id_partida', 'partida', 'generica', 'especifica', 'subEspecifica', 'denominacion', 'descripcion'], 'required'],
-            [['id_partida', 'partida', 'generica', 'especifica', 'subEspecifica', 'denominacion', 'descripcion'], 'string'],
-            [['activo', 'movimiento'], 'integer'],
+            [['id_partida',  'denominacion', 'descripcion'], 'string'],
+            [['partida'], 'match', 'pattern' => "/^.{3}$/", 'message' => 'Requiere 3 números'],
+            [['generica', 'especifica', 'subEspecifica'], 'match', 'pattern' => "/^.{2}$/", 'message' => 'Requiere 2 números'],
+            [['activo','partida','generica', 'especifica', 'subEspecifica', 'movimiento'], 'integer'],
             [['id_partida'], 'unique'],
         ];
     }
@@ -48,7 +50,7 @@ class Partida extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_partida' => 'Id Partida',
+            'id_partida' => 'Compuesta',
             'partida' => 'Partida',
             'generica' => 'Generica',
             'especifica' => 'Especifica',

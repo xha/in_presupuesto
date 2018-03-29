@@ -8,6 +8,8 @@ use frontend\Models\PartidaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\db\Query;
+use yii\helpers\Json;
 
 /**
  * PartidaController implements the CRUD actions for Partida model.
@@ -104,7 +106,9 @@ class PartidaController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $connection = \Yii::$app->db;
+        $query = "UPDATE ISPR_Partida SET activo=0 WHERE id_partida=".$id;
+        $connection->createCommand($query)->query();
 
         return $this->redirect(['index']);
     }

@@ -8,7 +8,7 @@ $params = array_merge(
 
 return [
     'id' => 'app-backend',
-    'name'=>'Modificar O/P',
+    'name'=>'Presupuesto Público',
     'language' => 'es',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
