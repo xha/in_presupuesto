@@ -128,4 +128,13 @@ class PartidaController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+    /**************** BUSQUEDAS ***********************************************************/ 
+    public function actionBuscarPartida($partida) {
+        $connection = \Yii::$app->db;
+
+        $query = "SELECT count(*) as conteo FROM ISPR_Partida 
+                WHERE id_partida='".$partida."'";
+        $pendientes = $connection->createCommand($query)->queryOne();
+        return Json::encode($pendientes);
+    }
 }

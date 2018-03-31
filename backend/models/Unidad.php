@@ -34,10 +34,10 @@ class Unidad extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['descripcion'], 'required'],
+            [['descripcion','nivel'], 'required'],
             [['descripcion', 'responsable'], 'string'],
-            [['principal', 'activo'], 'integer'],
-            [['id_unidad'], 'exist', 'skipOnError' => true, 'targetClass' => Unidad::className(), 'targetAttribute' => ['id_unidad' => 'id_unidad']],
+            [['nivel', 'activo'], 'integer'],
+            [['padre'], 'safe'],
         ];
     }
 
@@ -47,9 +47,10 @@ class Unidad extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_unidad' => 'Id Unidad',
+            'id_unidad' => 'Código',
             'descripcion' => 'Descripcion',
-            'principal' => 'Principal',
+            'nivel' => 'Nivel',
+            'padre' => 'Padre',
             'responsable' => 'Responsable',
             'activo' => 'Activo',
         ];
@@ -58,23 +59,7 @@ class Unidad extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUnidad()
-    {
-        return $this->hasOne(Unidad::className(), ['id_unidad' => 'id_unidad']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUnidad0()
-    {
-        return $this->hasOne(Unidad::className(), ['id_unidad' => 'id_unidad']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getISPRUnidadConexion()
+    public function getUnidadConexion()
     {
         return $this->hasOne(ISPRUnidadConexion::className(), ['id_unidad' => 'id_unidad']);
     }
@@ -82,7 +67,7 @@ class Unidad extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getISPRUsuarios()
+    public function getUsuarios()
     {
         return $this->hasMany(ISPRUsuario::className(), ['id_unidad' => 'id_unidad']);
     }

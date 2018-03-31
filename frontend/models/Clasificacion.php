@@ -32,8 +32,8 @@ class Clasificacion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['codigo', 'descripcion', 'detalle'], 'string'],
-            [['descripcion', 'detalle'], 'required'],
+            [['descripcion', 'detalle', 'nivel','codigo'], 'required'],
+            [['descripcion', 'detalle'], 'string'],
             [['nivel', 'padre', 'activo'], 'integer'],
         ];
     }
@@ -44,8 +44,8 @@ class Clasificacion extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_clasificacion' => 'Id Clasificacion',
-            'codigo' => 'Codigo',
+            'id_clasificacion' => 'Id',
+            'codigo' => 'Codigo ONAPRE',
             'descripcion' => 'Descripcion',
             'detalle' => 'Detalle',
             'nivel' => 'Nivel',
@@ -57,8 +57,8 @@ class Clasificacion extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getISPRUPAs()
+    public function getUPAs()
     {
-        return $this->hasMany(ISPRUPA::className(), ['id_clasificacion' => 'id_clasificacion']);
+        return $this->hasMany(UPA::className(), ['id_clasificacion' => 'id_clasificacion']);
     }
 }

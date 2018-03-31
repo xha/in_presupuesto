@@ -30,6 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'descripcion',
             //'detalle',
             'nivel',
+            'padre',
             'activo:boolean',
 
             ['class' => 'yii\grid\ActionColumn'],

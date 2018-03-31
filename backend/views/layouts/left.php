@@ -17,6 +17,7 @@
                                         ['label' => 'Activar Usuario', 'icon' => 'check', 'url' => ['../../backend/web/site/activar']],
                                         ['label' => 'Cambiar Clave', 'icon' => 'check', 'url' => ['../../backend/web/site/cambiar']],
                                         ['label' => 'Preguntas', 'icon' => 'check', 'url' => ['../../backend/web/pregunta']],
+                                        ['label' => 'Unidades', 'icon' => 'check', 'url' => ['../../backend/web/unidad']],
                                 ],];
                 $menuItems[] = ['label' => 'Área de Trabajo', 'icon' => 'unlock', 'url' => ['../../frontend/web/site/']];
             }

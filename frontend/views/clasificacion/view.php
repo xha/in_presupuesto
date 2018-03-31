@@ -29,8 +29,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'id_clasificacion',
             'codigo',
             'descripcion',
-            //'detalle',
             'nivel',
+            'padre',
             'activo',
         ],
     ]) ?>

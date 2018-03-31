@@ -45,6 +45,7 @@ class Upa extends \yii\db\ActiveRecord
             [['fecha'], 'safe'],
             [['id_clasificacion'], 'exist', 'skipOnError' => true, 'targetClass' => Clasificacion::className(), 'targetAttribute' => ['id_clasificacion' => 'id_clasificacion']],
             [['id_partida'], 'exist', 'skipOnError' => true, 'targetClass' => Partida::className(), 'targetAttribute' => ['id_partida' => 'id_partida']],
+            [['id_unidad'], 'exist', 'skipOnError' => true, 'targetClass' => Unidad::className(), 'targetAttribute' => ['id_unidad' => 'id_unidad']],
         ];
     }
 
@@ -82,5 +83,10 @@ class Upa extends \yii\db\ActiveRecord
     public function getPartida()
     {
         return $this->hasOne(Partida::className(), ['id_partida' => 'id_partida']);
+    }
+
+    public function getUnidad()
+    {
+        return $this->hasOne(Unidad::className(), ['id_unidad' => 'id_unidad']);
     }
 }

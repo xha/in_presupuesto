@@ -39,7 +39,7 @@ class Partida extends \yii\db\ActiveRecord
             [['id_partida',  'denominacion', 'descripcion'], 'string'],
             [['partida'], 'match', 'pattern' => "/^.{3}$/", 'message' => 'Requiere 3 números'],
             [['generica', 'especifica', 'subEspecifica'], 'match', 'pattern' => "/^.{2}$/", 'message' => 'Requiere 2 números'],
-            [['activo','partida','generica', 'especifica', 'subEspecifica', 'movimiento'], 'integer'],
+            [['activo','partida','generica', 'especifica', 'subEspecifica', 'movimiento', 'nivel'], 'integer'],
             [['id_partida'], 'unique'],
         ];
     }
@@ -59,6 +59,7 @@ class Partida extends \yii\db\ActiveRecord
             'descripcion' => 'Descripcion',
             'activo' => 'Activo',
             'movimiento' => 'Movimiento',
+            'nivel' => 'Nivel',
         ];
     }
 

@@ -1,16 +1,16 @@
 <?php
 
-namespace backend\Models;
+namespace frontend\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\Models\Unidad;
+use frontend\models\ClasificacionUnidad;
 
 /**
- * UnidadSearch represents the model behind the search form of `backend\Models\Unidad`.
+ * ClasificacionUnidadSearch represents the model behind the search form of `frontend\models\ClasificacionUnidad`.
  */
-class UnidadSearch extends Unidad
+class ClasificacionUnidadSearch extends ClasificacionUnidad
 {
     /**
      * @inheritdoc
@@ -18,8 +18,7 @@ class UnidadSearch extends Unidad
     public function rules()
     {
         return [
-            [['id_unidad', 'nivel', 'padre', 'activo'], 'integer'],
-            [['descripcion', 'responsable'], 'safe'],
+            [['id_clasificacion', 'id_unidad'], 'integer'],
         ];
     }
 
@@ -41,7 +40,7 @@ class UnidadSearch extends Unidad
      */
     public function search($params)
     {
-        $query = Unidad::find();
+        $query = ClasificacionUnidad::find();
 
         // add conditions that should always apply here
 
@@ -59,14 +58,9 @@ class UnidadSearch extends Unidad
 
         // grid filtering conditions
         $query->andFilterWhere([
+            'id_clasificacion' => $this->id_clasificacion,
             'id_unidad' => $this->id_unidad,
-            'nivel' => $this->nivel,
-            'padre' => $this->padre,
-            'activo' => $this->activo,
         ]);
-
-        $query->andFilterWhere(['like', 'descripcion', $this->descripcion])
-            ->andFilterWhere(['like', 'responsable', $this->responsable]);
 
         return $dataProvider;
     }

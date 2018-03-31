@@ -18,9 +18,6 @@ class UpaSearch extends Upa
     public function rules()
     {
         return [
-            [['id_upa', 'id_clasificacion', 'id_unidad', 'asignacion'], 'integer'],
-            [['id_partida', 'denominacion_partida', 'descripcion_clasificacion', 'fecha', 'partida_origen', 'tipo_operacion'], 'safe'],
-            [['monto'], 'number'],
         ];
     }
 
@@ -59,20 +56,7 @@ class UpaSearch extends Upa
         }
 
         // grid filtering conditions
-        $query->andFilterWhere([
-            'id_upa' => $this->id_upa,
-            'id_clasificacion' => $this->id_clasificacion,
-            'id_unidad' => $this->id_unidad,
-            'monto' => $this->monto,
-            'fecha' => $this->fecha,
-            'asignacion' => $this->asignacion,
-        ]);
-
-        $query->andFilterWhere(['like', 'id_partida', $this->id_partida])
-            ->andFilterWhere(['like', 'denominacion_partida', $this->denominacion_partida])
-            ->andFilterWhere(['like', 'descripcion_clasificacion', $this->descripcion_clasificacion])
-            ->andFilterWhere(['like', 'partida_origen', $this->partida_origen])
-            ->andFilterWhere(['like', 'tipo_operacion', $this->tipo_operacion]);
+        $query->andFilterWhere(['like', 'tipo_operacion', $this->tipo_operacion]);
 
         return $dataProvider;
     }

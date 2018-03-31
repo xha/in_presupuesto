@@ -9,15 +9,19 @@ use yii\widgets\ActiveForm;
 $this->registerJsFile('@web/general.js');
 $this->registerJsFile('@web/js/clasificacion.js');
 $this->registerCssFile('@web/css/general.css');
+if (isset($_GET['id'])==1) {
+    $id = $_GET['id'];
+} else {
+    $id = 0;
+}
 ?>
 <div id="msj_principal"></div>
 <div class="clasificacion-form">
-    <center>
-        <?= Html::submitButton("Actualizar",array('class'=>'btn btn-success','onclick'=>'js:enviar_data();', 'id'=> 'btn_enviar')); ?>
-        <img id='img_load' style='visibility: hidden' src='../../../img/preloader.gif' />
-    </center>
-    
     <?php $form = ActiveForm::begin(); ?>
+    <input type="hidden" id='id' value="<?= $id ?>" />
+    <center>
+        <?= Html::submitButton("Actualizar",['class'=>'btn btn-success']); ?>
+    </center>
 
     <?= $form->field($model, 'codigo')->textInput(['maxlength' => 50]) ?>
 

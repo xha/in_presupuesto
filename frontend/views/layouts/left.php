@@ -37,8 +37,14 @@
                                         ['label' => 'Empresa', 'icon' => 'check', 'url' => ['../../frontend/web/empresa/update?id=1']],
                                         ['label' => 'Catálogo Presupuestario', 'icon' => 'check', 'url' => ['../../frontend/web/partida']],
                                         ['label' => 'Clasificación', 'icon' => 'check', 'url' => ['../../frontend/web/clasificacion']],
+                                        ['label' => 'Clasificación - Unidad', 'icon' => 'check', 'url' => ['../../frontend/web/clasificacion-unidad']],
                                 ],];
-                //$menuItems[] = ['label' => 'Devolución de NE Vta', 'icon' => 'battery', 'url' => ['../../frontend/web/venta/?TipoFac=D']];
+                $menuItems[] = ['label' => 'Formulación Presupuestaria', 'options' => ['class' => 'header']];
+                $menuItems[] = ['label' => 'Anteproyecto', 'icon' => 'battery-empty', 'url' => ['../../frontend/web/upa/?tipo=B']];
+                $menuItems[] = ['label' => 'Asignación', 'icon' => 'battery', 'url' => ['../../frontend/web/upa/index']];
+                $menuItems[] = ['label' => 'Modificación', 'icon' => 'battery-half', 'url' => ['../../frontend/web/upa/?tipo=M']];
+                $menuItems[] = ['label' => 'Éjecución', 'options' => ['class' => 'header']];
+                $menuItems[] = ['label' => 'Pre Compromiso', 'icon' => 'book', 'url' => ['../../frontend/web/upa/']];
             //}
         ?>
         <?= dmstr\widgets\Menu::widget(

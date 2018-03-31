@@ -68,7 +68,9 @@ class ClasificacionController extends Controller
     {
         $model = new Clasificacion();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->padre=="") $model->padre = 0;
+            $model->save();
             return $this->redirect(['view', 'id' => $model->id_clasificacion]);
         }
 
@@ -88,7 +90,9 @@ class ClasificacionController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->padre=="") $model->padre = 0;
+            $model->save();
             return $this->redirect(['view', 'id' => $model->id_clasificacion]);
         }
 
@@ -131,11 +135,11 @@ class ClasificacionController extends Controller
     }
     
     /**************** BUSQUEDAS ***********************************************************/ 
-    public function actionBuscarPadre($nivel) {
+    public function actionBuscarPadre($nivel,$actual) {
         $connection = \Yii::$app->db;
 
         $query = "SELECT * FROM ISPR_Clasificacion 
-                WHERE nivel=".$nivel." and activo=1
+                WHERE nivel=".$nivel." and activo=1 and id_clasificacion<>$actual
                 ORDER BY codigo,descripcion asc";
         $pendientes = $connection->createCommand($query)->queryAll();
         return Json::encode($pendientes);

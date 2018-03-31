@@ -18,7 +18,7 @@ class ClasificacionSearch extends Clasificacion
     public function rules()
     {
         return [
-            [['id_clasificacion', 'nivel', 'activo'], 'integer'],
+            [['id_clasificacion', 'nivel', 'activo', 'padre'], 'integer'],
             [['codigo', 'descripcion', 'detalle'], 'safe'],
         ];
     }
@@ -61,6 +61,7 @@ class ClasificacionSearch extends Clasificacion
         $query->andFilterWhere([
             'id_clasificacion' => $this->id_clasificacion,
             'nivel' => $this->nivel,
+            'padre' => $this->padre,
             'activo' => $this->activo,
         ]);
 

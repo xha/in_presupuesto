@@ -28,7 +28,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'id_unidad',
             'descripcion',
             'responsable',
-            'principal:boolean',
+            'nivel',
+            'padre',
             'activo:boolean',
 
             ['class' => 'yii\grid\ActionColumn'],

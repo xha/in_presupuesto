@@ -4,26 +4,20 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model backend\Models\UnidadSearch */
+/* @var $model frontend\models\ClasificacionUnidadSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="unidad-search">
+<div class="clasificacion-unidad-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
     ]); ?>
 
+    <?= $form->field($model, 'id_clasificacion') ?>
+
     <?= $form->field($model, 'id_unidad') ?>
-
-    <?= $form->field($model, 'descripcion') ?>
-
-    <?= $form->field($model, 'nivel') ?>
-
-    <?= $form->field($model, 'responsable') ?>
-
-    <?= $form->field($model, 'activo') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

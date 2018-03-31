@@ -33,14 +33,16 @@ class UpaController extends Controller
      * Lists all Upa models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($tipo = NULL)
     {
-        $searchModel = new UpaSearch();
+        if (isset($tipo)<>1) $tipo = 'A';
+        $searchModel = new UpaSearch([ 'tipo_operacion' => $tipo]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'tipo' => $tipo,
         ]);
     }
 

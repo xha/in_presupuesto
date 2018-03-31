@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'generica',
             'especifica',
             'subEspecifica',
-            //'denominacion',
+            'denominacion',
             //'descripcion',
             'activo:boolean',
             //'movimiento',

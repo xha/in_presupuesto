@@ -7,35 +7,41 @@ use yii\grid\GridView;
 /* @var $searchModel frontend\Models\UpaSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Upas';
+switch ($tipo) {
+    case 'M': $titulo = 'Asignación';
+    break;
+    case 'B': $titulo = 'Anteproyecto';
+    break;
+    default: 
+        $titulo = 'Asignación';
+}
+
+$this->title = $titulo;
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="upa-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?= Html::a('Create Upa', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <center>
+        <?= Html::a('Actualizar '.$titulo, ['upa/create?tipo='.$tipo.'&titulo='.$titulo], ['class' => 'btn btn-success']); ?>
+    </center>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            //['class' => 'yii\grid\SerialColumn'],
 
-            'id_upa',
-            'id_partida',
-            'denominacion_partida',
-            'id_clasificacion',
-            'descripcion_clasificacion',
+            //'id_upa',
+            //'id_partida',
+            //'denominacion_partida',
+            //'id_clasificacion',
+            //'descripcion_clasificacion',
             //'id_unidad',
-            //'monto',
             //'fecha',
             //'partida_origen',
             //'asignacion',
-            //'tipo_operacion',
+            'tipo_operacion',
+            'monto',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

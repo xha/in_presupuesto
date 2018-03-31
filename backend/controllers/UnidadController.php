@@ -8,6 +8,8 @@ use backend\Models\UnidadSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\db\Query;
+use yii\helpers\Json;
 
 /**
  * UnidadController implements the CRUD actions for Unidad model.
@@ -66,7 +68,9 @@ class UnidadController extends Controller
     {
         $model = new Unidad();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->padre=="") $model->padre = 0;
+            $model->save();
             return $this->redirect(['view', 'id' => $model->id_unidad]);
         }
 
@@ -86,7 +90,9 @@ class UnidadController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->padre=="") $model->padre = 0;
+            $model->save();
             return $this->redirect(['view', 'id' => $model->id_unidad]);
         }
 
@@ -104,7 +110,9 @@ class UnidadController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $connection = \Yii::$app->db;
+        $query = "UPDATE ISPR_Unidad SET activo=0 WHERE id_unidad=".$id;
+        $connection->createCommand($query)->query();
 
         return $this->redirect(['index']);
     }
@@ -123,5 +131,16 @@ class UnidadController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    /**************** BUSQUEDAS ***********************************************************/ 
+    public function actionBuscarPadre($nivel,$actual) {
+        $connection = \Yii::$app->db;
+
+        $query = "SELECT * FROM ISPR_Unidad 
+                WHERE nivel=".$nivel." and activo=1 and id_unidad<>$actual
+                ORDER BY id_unidad,descripcion asc";
+        $pendientes = $connection->createCommand($query)->queryAll();
+        return Json::encode($pendientes);
     }
 }

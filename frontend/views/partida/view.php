@@ -35,6 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'descripcion',
             'activo:boolean',
             'movimiento',
+            'nivel'
         ],
     ]) ?>
 
