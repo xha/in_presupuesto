@@ -18,6 +18,7 @@
                                         ['label' => 'Cambiar Clave', 'icon' => 'check', 'url' => ['../../backend/web/site/cambiar']],
                                         ['label' => 'Preguntas', 'icon' => 'check', 'url' => ['../../backend/web/pregunta']],
                                         ['label' => 'Unidades', 'icon' => 'check', 'url' => ['../../backend/web/unidad']],
+                                        ['label' => 'Conexiones', 'icon' => 'check', 'url' => ['../../backend/web/unidad-conexion']],
                                 ],];
                 $menuItems[] = ['label' => 'Área de Trabajo', 'icon' => 'unlock', 'url' => ['../../frontend/web/site/']];
             }

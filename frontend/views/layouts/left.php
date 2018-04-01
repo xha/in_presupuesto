@@ -38,13 +38,16 @@
                                         ['label' => 'Catálogo Presupuestario', 'icon' => 'check', 'url' => ['../../frontend/web/partida']],
                                         ['label' => 'Clasificación', 'icon' => 'check', 'url' => ['../../frontend/web/clasificacion']],
                                         ['label' => 'Clasificación - Unidad', 'icon' => 'check', 'url' => ['../../frontend/web/clasificacion-unidad']],
+                                        ['label' => 'Naturaleza del Gasto', 'icon' => 'check', 'url' => ['../../frontend/web/naturaleza']],
                                 ],];
                 $menuItems[] = ['label' => 'Formulación Presupuestaria', 'options' => ['class' => 'header']];
                 $menuItems[] = ['label' => 'Anteproyecto', 'icon' => 'battery-empty', 'url' => ['../../frontend/web/upa/?tipo=B']];
                 $menuItems[] = ['label' => 'Asignación', 'icon' => 'battery', 'url' => ['../../frontend/web/upa/index']];
                 $menuItems[] = ['label' => 'Modificación', 'icon' => 'battery-half', 'url' => ['../../frontend/web/upa/?tipo=M']];
+                $menuItems[] = ['label' => 'Levantamiento de Inf.', 'icon' => 'balance-scale', 'url' => ['../../frontend/web/levantamiento']];
                 $menuItems[] = ['label' => 'Éjecución', 'options' => ['class' => 'header']];
                 $menuItems[] = ['label' => 'Pre Compromiso', 'icon' => 'book', 'url' => ['../../frontend/web/upa/']];
+                $menuItems[] = ['label' => 'Reportes', 'options' => ['class' => 'header']];
             //}
         ?>
         <?= dmstr\widgets\Menu::widget(

@@ -7,6 +7,7 @@ use Yii;
 /**
  * This is the model class for table "ISPR_UnidadConexion".
  *
+ * @property int $id_unidad_conexion
  * @property string $base_datos
  * @property string $usuario
  * @property string $clave
@@ -33,7 +34,7 @@ class UnidadConexion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['base_datos', 'usuario', 'clave', 'ip'], 'required'],
+            [['base_datos', 'usuario', 'clave', 'ip', 'id_unidad'], 'required'],
             [['base_datos', 'usuario', 'clave', 'ip'], 'string'],
             [['puerto', 'id_unidad', 'activo'], 'integer'],
             [['id_unidad'], 'unique'],
@@ -47,12 +48,13 @@ class UnidadConexion extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'base_datos' => 'Base Datos',
+            'id_unidad_conexion' => 'Id',
+            'base_datos' => 'Base de Datos',
             'usuario' => 'Usuario',
             'clave' => 'Clave',
             'ip' => 'Ip',
             'puerto' => 'Puerto',
-            'id_unidad' => 'Id Unidad',
+            'id_unidad' => 'Unidad',
             'activo' => 'Activo',
         ];
     }
@@ -60,7 +62,7 @@ class UnidadConexion extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUnidad()
+    public function getIdUnidad()
     {
         return $this->hasOne(Unidad::className(), ['id_unidad' => 'id_unidad']);
     }
