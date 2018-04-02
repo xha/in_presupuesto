@@ -39,6 +39,7 @@
                                         ['label' => 'Clasificación', 'icon' => 'check', 'url' => ['../../frontend/web/clasificacion']],
                                         ['label' => 'Clasificación - Unidad', 'icon' => 'check', 'url' => ['../../frontend/web/clasificacion-unidad']],
                                         ['label' => 'Naturaleza del Gasto', 'icon' => 'check', 'url' => ['../../frontend/web/naturaleza']],
+                                        ['label' => 'Unidad de Medida', 'icon' => 'check', 'url' => ['../../frontend/web/unidad-medida']],
                                 ],];
                 $menuItems[] = ['label' => 'Formulación Presupuestaria', 'options' => ['class' => 'header']];
                 $menuItems[] = ['label' => 'Anteproyecto', 'icon' => 'battery-empty', 'url' => ['../../frontend/web/upa/?tipo=B']];
