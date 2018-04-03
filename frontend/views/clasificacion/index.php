@@ -24,13 +24,19 @@ $this->params['breadcrumbs'][] = $this->title;
         },
         'columns' => [
             //['class' => 'yii\grid\SerialColumn'],
-
             'id_clasificacion',
             'codigo',
-            'descripcion',
+            [
+                'attribute'=>'descripcion',
+                'contentOptions' => ['style' => 'white-space: normal;'],
+            ],
             //'detalle',
             'nivel',
-            'padre',
+             [
+              'attribute'=>'padre',
+              'value'=>'idPadre.descripcion',
+              'contentOptions' => ['style' => 'white-space: normal;'],
+            ],
             'activo:boolean',
 
             ['class' => 'yii\grid\ActionColumn'],

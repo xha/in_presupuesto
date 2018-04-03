@@ -21,6 +21,12 @@ class Levantamiento extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    public $id_unidad_medida;
+    public $id_naturaleza;
+    public $id_partida;
+    public $id_clasificación;
+    public $mes;
+    public $id_clasificacion;
     public static function tableName()
     {
         return 'ISPR_Levantamiento';
@@ -50,7 +56,7 @@ class Levantamiento extends \yii\db\ActiveRecord
             'id_unidad' => 'Unidad',
             'fecha' => 'Fecha',
             'total' => 'Total',
-            'activo' => 'Activo',
+            'activo' => 'Cerrar Levantamiento',
         ];
     }
 

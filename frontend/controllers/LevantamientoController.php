@@ -65,13 +65,37 @@ class LevantamientoController extends Controller
     public function actionCreate()
     {
         $model = new Levantamiento();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $connection = \Yii::$app->db;
+        $partida = array();
+        $clasificacion="";
+        /********************** PARTIDAS ***************************************/
+        $query = "SELECT id_partida FROM ISPR_Partida where activo=1 and partida like '4%' and movimiento=1 order by id_partida desc";
+        $data1 = $connection->createCommand($query)->queryAll();
+        
+        for($i=0;$i<count($data1);$i++) {
+            $partida[]= $data1[$i]['id_partida'];
+        }
+        
+        /********************** CLASIFICACION ***************************************/
+        $query = "SELECT c.id_clasificacion,c.descripcion 
+                FROM ISPR_Clasificacion c, ISPR_ClasificacionUnidad u 
+                where c.activo=1 and c.id_clasificacion=u.id_clasificacion
+                order by c.id_clasificacion";
+        $data1 = $connection->createCommand($query)->queryAll();
+        
+        for($i=0;$i<count($data1);$i++) {
+            $clasificacion.= "<option value='".$data1[$i]['id_clasificacion']."'>".$data1[$i]['id_clasificacion']." - ".$data1[$i]['descripcion']."</option>";;
+        }
+        
+        if ($model->load(Yii::$app->request->post())) {
+            $model->save();
             return $this->redirect(['view', 'id' => $model->id_levantamiento]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'partida' => $partida,
+            'clasificacion' => $clasificacion,
         ]);
     }
 

@@ -61,4 +61,9 @@ class Clasificacion extends \yii\db\ActiveRecord
     {
         return $this->hasMany(UPA::className(), ['id_clasificacion' => 'id_clasificacion']);
     }
+    
+    public function getIdPadre()
+    {
+        return $this->hasOne(Clasificacion::className(), ['id_clasificacion' => 'padre']);
+    }
 }
