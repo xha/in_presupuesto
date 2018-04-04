@@ -12,16 +12,15 @@ $this->registerJsFile('@web/general.js');
 $this->registerJsFile('@web/js/levantamiento.js');
 $this->registerCssFile('@web/css/general.css');
 $mes = Array('1'=>'Enero','2'=>'Febrero','3'=>'Marzo','4'=>'Abril','5'=>'Mayo','6'=>'Junio','7'=>'Julio','8'=>'Agosto','9'=>'Septiembre','10'=>'Octubre','11'=>'Noviembre','12'=>'Diciembre');
+$asignacion = Array('2018'=>'2018','2019'=>'2019','2020'=>'2020','2021'=>'2021','2022'=>'2022','2023'=>'2023','2024'=>'2024','2025'=>'2025');
 ?>
 
 <div class="levantamiento-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <center class="form-group">
-        <?= Html::submitButton('Actualizar', ['class' => 'btn btn-success']) ?>
-    </center>
-
+    <?= $form->field($model, 'asignacion')->dropDownList($asignacion,['prompt'=>'Seleccione','class'=>'texto texto-ec']); ?>
+    
     <?= $form->field($model, 'total')->textInput(['readonly' => true, 'class' => 'texto texto-medio']) ?>
     <?php
         if ($model->isNewRecord) {
@@ -30,13 +29,13 @@ $mes = Array('1'=>'Enero','2'=>'Febrero','3'=>'Marzo','4'=>'Abril','5'=>'Mayo','
             echo $form->field($model, 'activo')->dropDownList(['0' => 'NO','1' => 'SI'], ['class' => 'texto texto-ec']); 
         }
     ?>
-    
+    <input type="hidden" id='i_items' name='i_items' />
     <br /><br />
     <table class="inicial_em2">
         <tr>
             <td>
                 <b>Fila</b><br />
-                <input id="d_fila" maxlength="5" class="texto texto-xc" readonly="true" />
+                <input id="d_fila" maxlength="5" class="texto texto-xc" />
             </td>
             <td>
                 <b>Clasificaci&oacute;n *</b><br />
@@ -52,7 +51,7 @@ $mes = Array('1'=>'Enero','2'=>'Febrero','3'=>'Marzo','4'=>'Abril','5'=>'Mayo','
                             'source' => $partida,
                             'minLength'=>'6', 
                         ],
-                        'options' => ['class' => 'texto texto-ec'],
+                        'options' => ['class' => 'texto texto-ec', 'onblur'=>'js:buscar_partida();'],
                     ]);
                 ?>
             </td> 
@@ -61,16 +60,12 @@ $mes = Array('1'=>'Enero','2'=>'Febrero','3'=>'Marzo','4'=>'Abril','5'=>'Mayo','
                 <?= Html::activeDropDownList($model, 'id_unidad_medida',
                     ArrayHelper::map(UnidadMedida::find()->where(['activo' => '1'])->OrderBy('descripcion')->all(), 'id_unidad_medida', 'descripcion'), ['class'=>'texto texto-corto','prompt'=>'Seleccione']) ?>
             </td> 
-            <td>
+            <td colspan='2'>
                 <b>Naturaleza de Gasto *</b><br />
                 <?= Html::activeDropDownList($model, 'id_naturaleza',
                     ArrayHelper::map(Naturaleza::find()->where(['activo' => '1'])->OrderBy('descripcion')->all(), 'id_naturaleza', 'descripcion'), ['class'=>'texto texto-corto','prompt'=>'Seleccione']) ?>
             </td> 
-            <td>
-                <b>Mes *</b><br />
-                <?= $form->field($model, 'mes')->dropDownList($mes,['prompt'=>'Seleccione','class'=>'texto texto-ec'])->label(false); ?>
-            </td> 
-            <td rowspan="3">
+            <td rowspan="2">
                 <button type="button" class="btn btn-primary" id="d_agregar" onclick="valida_detalle()"><br />Agregar<br /><br /></button>
             </td>
         </tr>
@@ -80,18 +75,22 @@ $mes = Array('1'=>'Enero','2'=>'Febrero','3'=>'Marzo','4'=>'Abril','5'=>'Mayo','
                 <input id="d_indice" onkeypress="return entero(event);" class="texto texto-xc" maxlength="5" value="1" />
             </td>
             <td>
+                <b>Mes *</b><br />
+                <?= $form->field($model, 'mes')->dropDownList($mes,['prompt'=>'Seleccione','class'=>'texto texto-ec'])->label(false); ?>
+            </td> 
+            <td>
                 <b>Rubro / Item *</b><br />
                 <input id="d_nombre" maxlength="120" class="texto texto-medio" />
             </td> 
             <td>
                 <b>Cantidad *</b><br />
                 <input id="d_cantidad" maxlength="10" class="texto texto-ec" 
-                 onkeypress="return entero(event);" onkeyup="valida_cantidad(this.id)" />
+                 onkeypress="return entero(event);" onkeyup="valida_cantidad(this.id)" onblur='calcula_total()' />
             </td>
             <td>
                 <b>Precio *</b><br />
                 <input id="d_precio" maxlength="20" class="texto texto-ec" 
-                 onkeypress="return entero(event);" onkeyup="valida_cantidad(this.id)" />
+                 onkeypress="return entero(event);" onkeyup="valida_cantidad(this.id)" onblur='calcula_total()' />
             </td>
             <td>
                 <b>Total Item</b><br />
@@ -99,9 +98,12 @@ $mes = Array('1'=>'Enero','2'=>'Febrero','3'=>'Marzo','4'=>'Abril','5'=>'Mayo','
             </td>
         </tr>
         <tr>
-            <td colspan="5">
+            <td colspan="6">
                 <b>Observaciones:</b><br />
                 <input id="d_observacion" maxlength="500" class="form-control" />
+            </td>
+            <td valign='bottom'>
+                <button type="button" class="btn btn-default" onclick="limpiar_detalle()">Limpiar</button>
             </td>
         </tr>
     </table>

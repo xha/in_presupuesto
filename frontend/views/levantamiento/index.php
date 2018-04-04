@@ -9,20 +9,21 @@ use yii\grid\GridView;
 
 $this->title = 'Levantamiento de Información';
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="levantamiento-index">
 
     <p>
         <?= Html::a('Crear Levantamiento de Información', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-
+    
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             //['class' => 'yii\grid\SerialColumn'],
 
-            'id_levantamiento',
+            'asignacion',
             'id_unidad',
             'fecha',
             'total',

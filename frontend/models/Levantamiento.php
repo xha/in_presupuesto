@@ -39,7 +39,7 @@ class Levantamiento extends \yii\db\ActiveRecord
     {
         return [
             [['id_unidad'], 'required'],
-            [['id_unidad', 'activo'], 'integer'],
+            [['id_unidad', 'activo', 'asignacion'], 'integer'],
             [['fecha'], 'safe'],
             [['total'], 'number'],
             [['id_unidad'], 'exist', 'skipOnError' => true, 'targetClass' => Unidad::className(), 'targetAttribute' => ['id_unidad' => 'id_unidad']],
@@ -56,6 +56,7 @@ class Levantamiento extends \yii\db\ActiveRecord
             'id_unidad' => 'Unidad',
             'fecha' => 'Fecha',
             'total' => 'Total',
+            'asignacion' => 'Asignación',
             'activo' => 'Cerrar Levantamiento',
         ];
     }

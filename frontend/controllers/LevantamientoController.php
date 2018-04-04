@@ -8,6 +8,7 @@ use frontend\models\LevantamientoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Json;
 
 /**
  * LevantamientoController implements the CRUD actions for Levantamiento model.
@@ -88,8 +89,55 @@ class LevantamientoController extends Controller
         }
         
         if ($model->load(Yii::$app->request->post())) {
-            $model->save();
-            return $this->redirect(['view', 'id' => $model->id_levantamiento]);
+            $hora = time();
+            $hora = date('H:i:s',$hora);
+            $fechat = date('Ymd H:i:s',time());
+            $model->fecha = $fechat;
+            $model->id_unidad = 1;
+            
+            $query = "SELECT count(*) as conteo
+                FROM ISPR_Levantamiento
+                where asignacion=".$model->asignacion." and id_unidad='".$model->id_unidad."'";
+            $data1 = $connection->createCommand($query)->queryOne();
+            
+            if ($data1['conteo']==0) {
+                $transaction = $connection->beginTransaction();
+                  try {
+                $model->save();
+                /*************************************************************************************************/
+                //Fila	Item	Partida	Clasificación	UM	Naturaleza	Mes	Cantidad	Precio	Total	Indice	Observación
+                //  0   1       2       3               4       5               6       7               8       9       10      11
+                $detalle = explode("¬",$_POST['i_items']);
+                for ($i=0;$i < count($detalle) - 1;$i++) {
+                    $campos = explode("#",$detalle[$i]);
+                    $query = "SELECT descripcion
+                        FROM ISPR_Partida
+                        where id_partida=".$campos[2];
+                    $partida = $connection->createCommand($query)->queryOne();
+
+                    $query = "SELECT descripcion
+                        FROM ISPR_Clasificacion
+                        where id_clasificacion=".$campos[3];
+                    $clasificacion = $connection->createCommand($query)->queryOne();
+                    
+                    
+                    $query = "INSERT INTO ISPR_LevantamientoDetalle(id_levantamiento,id_naturaleza,id_partida,id_clasificacion,id_unidad_medida,
+                        descripcion_clasificacion,descripcion_partida,rubro,cantidad,precio,total,indice,mes,observacion) VALUES (".$model->id_levantamiento.",
+                        ".$campos[5].",".$campos[2].",".$campos[3].",".$campos[4].",'".$clasificacion['descripcion']."','".$partida['descripcion']."','".$campos[1]."',
+                        ".$campos[7].",".$campos[8].",".$campos[9].",".$campos[10].",".$campos[6].",'".$campos[11]."');";
+                    $connection->createCommand($query)->execute();
+                }
+                $transaction->commit();
+                } catch (\Exception $msg) {
+                    $transaction->rollBack();
+                    throw $msg;
+                } catch (\Throwable $msg) {
+                    $transaction->rollBack();
+                    throw $msg;
+                }
+            }
+            
+            return $this->redirect(['update', 'id' => $model->id_levantamiento]);
         }
 
         return $this->render('create', [
@@ -109,6 +157,27 @@ class LevantamientoController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $connection = \Yii::$app->db;
+        $partida = array();
+        $clasificacion="";
+        /********************** PARTIDAS ***************************************/
+        $query = "SELECT id_partida FROM ISPR_Partida where activo=1 and partida like '4%' and movimiento=1 order by id_partida desc";
+        $data1 = $connection->createCommand($query)->queryAll();
+        
+        for($i=0;$i<count($data1);$i++) {
+            $partida[]= $data1[$i]['id_partida'];
+        }
+        
+        /********************** CLASIFICACION ***************************************/
+        $query = "SELECT c.id_clasificacion,c.descripcion 
+                FROM ISPR_Clasificacion c, ISPR_ClasificacionUnidad u 
+                where c.activo=1 and c.id_clasificacion=u.id_clasificacion
+                order by c.id_clasificacion";
+        $data1 = $connection->createCommand($query)->queryAll();
+        
+        for($i=0;$i<count($data1);$i++) {
+            $clasificacion.= "<option value='".$data1[$i]['id_clasificacion']."'>".$data1[$i]['id_clasificacion']." - ".$data1[$i]['descripcion']."</option>";;
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id_levantamiento]);
@@ -116,6 +185,8 @@ class LevantamientoController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'partida' => $partida,
+            'clasificacion' => $clasificacion,
         ]);
     }
 
@@ -147,5 +218,14 @@ class LevantamientoController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    /**************** BUSQUEDAS ***********************************************************/ 
+    public function actionBuscarPartida($partida) {
+        $connection = \Yii::$app->db;
+
+        $query = "SELECT count(*) as conteo FROM ISPR_Partida
+                WHERE id_partida=".$partida." and activo=1";
+        $pendientes = $connection->createCommand($query)->queryOne();
+        return Json::encode($pendientes);
     }
 }

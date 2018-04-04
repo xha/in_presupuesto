@@ -18,7 +18,7 @@ class LevantamientoSearch extends Levantamiento
     public function rules()
     {
         return [
-            [['id_levantamiento', 'id_unidad', 'activo'], 'integer'],
+            [['id_levantamiento', 'id_unidad', 'activo' , 'asignacion'], 'integer'],
             [['fecha'], 'safe'],
             [['total'], 'number'],
         ];
@@ -65,6 +65,7 @@ class LevantamientoSearch extends Levantamiento
             'fecha' => $this->fecha,
             'total' => $this->total,
             'activo' => $this->activo,
+            'asignacion' => $this->asignacion,
         ]);
 
         return $dataProvider;
