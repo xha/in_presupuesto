@@ -26,11 +26,11 @@
         </form>
         <!-- /.search form -->
         <?php
-            /*if (Yii::$app->user->isGuest) {
+            if (Yii::$app->user->isGuest) {
                 $menuItems[] = ['label' => 'Login', 'icon' => 'circle-o', 'url' => ['../../backend/web/site/login']];
                 $menuItems[] = ['label' => 'Registro', 'icon' => 'file-o', 'url' => ['../../backend/web/site/register']];
                 $menuItems[] = ['label' => 'Recuperar Usuario', 'icon' => 'unlock', 'url' => ['../../backend/web/site/recuperar']];
-            } else {*/
+            } else {
                 $menuItems[] = ['label' => 'Configuración', 'icon' => 'unlock', 'url' => ['../../backend/web/site/']];
                 $menuItems[] = ['label' => 'Tablas Básicas', 'icon' => 'folder-o', 'url' => '#',
                                     'items' => [
@@ -40,6 +40,7 @@
                                         ['label' => 'Clasificación - Unidad', 'icon' => 'check', 'url' => ['../../frontend/web/clasificacion-unidad']],
                                         ['label' => 'Naturaleza del Gasto', 'icon' => 'check', 'url' => ['../../frontend/web/naturaleza']],
                                         ['label' => 'Unidad de Medida', 'icon' => 'check', 'url' => ['../../frontend/web/unidad-medida']],
+                                        ['label' => 'Productos', 'icon' => 'check', 'url' => ['../../frontend/web/cnu']],
                                 ],];
                 $menuItems[] = ['label' => 'Formulación Presupuestaria', 'options' => ['class' => 'header']];
                 $menuItems[] = ['label' => 'Levantamiento de Inf.', 'icon' => 'balance-scale', 'url' => ['../../frontend/web/levantamiento']];
@@ -49,7 +50,7 @@
                 $menuItems[] = ['label' => 'Éjecución', 'options' => ['class' => 'header']];
                 $menuItems[] = ['label' => 'Pre Compromiso', 'icon' => 'book', 'url' => ['../../frontend/web/upa/']];
                 $menuItems[] = ['label' => 'Reportes', 'options' => ['class' => 'header']];
-            //}
+            }
         ?>
         <?= dmstr\widgets\Menu::widget(
             [

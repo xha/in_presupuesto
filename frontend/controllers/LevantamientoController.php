@@ -216,8 +216,12 @@ class LevantamientoController extends Controller
                 $transaction->rollBack();
                 throw $msg;
             }
-
-            return $this->redirect(['update', 'id' => $model->id_levantamiento]);
+             
+            if ($model->activo==0) {
+                return $this->redirect(['update', 'id' => $model->id_levantamiento]);
+            } else {
+                return $this->redirect(['index']);
+            }
         }
             
         return $this->render('update', [

@@ -81,7 +81,8 @@ input[readonly] {
 }
 
 .inicial00 {
-    width: 99%;
+    width: 95%;
+    float: left;
 }
 
 .inicial_1 {
@@ -96,7 +97,7 @@ input[readonly] {
 }
 
 .inicial11 {
-    width: 85%;
+    width: 90%;
 }
 
 .inicial_em0 {
@@ -114,7 +115,7 @@ input[readonly] {
 }
 
 .inicial_em2 {
-    width: 99%;
+    width: 65em;
     float: left;
 }
 

@@ -58,7 +58,6 @@ function agregar_fila(valor,otro) {
         tabla.appendChild(add_filas(campos, 'td','editar_detalle####cancela_detalle','',8));
         cantidad.value = ""; 
         costo.value = "";
-        recorre_tabla(); 
     }
 }
 
@@ -88,8 +87,10 @@ function valida_detalle() {
     var naturaleza = trae('levantamiento-id_naturaleza').value;
     var mes = trae('levantamiento-mes').value;
     var tabla = trae('listado_detalle');
+    var msj_principal = trae('msj_principal');
     var campos = new Array();
 
+    msj_principal.innerHTML = "";
     if ((asignacion!="") && (clasificacion!="") && (cantidad!="") && (precio!="") && (indice!="") && (nombre!="") && (partida!="") && (um!="") && (naturaleza!="") && (mes!="") && (total!="")) {
         if (fila>0) {
             if (tabla.rows[fila]!=undefined) {
@@ -105,7 +106,6 @@ function valida_detalle() {
                 tabla.rows[fila].cells[10].innerHTML = indice;  
                 tabla.rows[fila].cells[11].innerHTML = observacion; 
                 limpiar_detalle();
-                recorre_tabla();
                 return false;
             }
         }
@@ -125,7 +125,8 @@ function valida_detalle() {
         campos.push(observacion);
         tabla.appendChild(add_filas(campos, 'td','editar_detalle####cancela_detalle','',11));
         limpiar_detalle();
-        recorre_tabla();
+    } else {
+        oculta_mensaje('msj_principal','Faltan datos');
     }
 }
 
@@ -185,7 +186,6 @@ function rebaja_linea(valor) {
     trae("listado_detalle").rows[valor].cells[7].innerHTML = "0";  
     trae("listado_detalle").rows[valor].cells[8].innerHTML = "0";  
     trae("listado_detalle").rows[valor].cells[9].innerHTML = "0";  
-    recorre_tabla();
 }
 
 function recorre_tabla() {
@@ -198,7 +198,7 @@ function recorre_tabla() {
     
     $("#listado_detalle tr").each(function (index) {
         var td = $(this).children("td");
-        if (td.eq(0).text()!="") {
+        if ((td.eq(0).text()!="") && (parseFloat(td.eq(9).text())>0)) {
             valor+= parseFloat(td.eq(9).text());
             arreglo="";
             arreglo+=td.eq(0).text()+"#";
@@ -217,7 +217,7 @@ function recorre_tabla() {
         }
     });
     total.value = valor;
-
+    
     if (i_items.value!="") document.forms['w0'].submit();
 }
 
