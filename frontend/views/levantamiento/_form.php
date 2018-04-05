@@ -13,6 +13,11 @@ $this->registerJsFile('@web/js/levantamiento.js');
 $this->registerCssFile('@web/css/general.css');
 $mes = Array('1'=>'Enero','2'=>'Febrero','3'=>'Marzo','4'=>'Abril','5'=>'Mayo','6'=>'Junio','7'=>'Julio','8'=>'Agosto','9'=>'Septiembre','10'=>'Octubre','11'=>'Noviembre','12'=>'Diciembre');
 $asignacion = Array('2018'=>'2018','2019'=>'2019','2020'=>'2020','2021'=>'2021','2022'=>'2022','2023'=>'2023','2024'=>'2024','2025'=>'2025');
+if (isset($_GET['id'])==1) {
+    $id = $_GET['id'];
+} else {
+    $id = '';
+}
 ?>
 
 <div class="levantamiento-form">
@@ -30,6 +35,7 @@ $asignacion = Array('2018'=>'2018','2019'=>'2019','2020'=>'2020','2021'=>'2021',
         }
     ?>
     <input type="hidden" id='i_items' name='i_items' />
+    <input type="hidden" id='id' name='id' value="<?= $id; ?>" />
     <br /><br />
     <table class="inicial_em2">
         <tr>

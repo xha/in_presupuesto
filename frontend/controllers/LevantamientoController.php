@@ -179,10 +179,47 @@ class LevantamientoController extends Controller
             $clasificacion.= "<option value='".$data1[$i]['id_clasificacion']."'>".$data1[$i]['id_clasificacion']." - ".$data1[$i]['descripcion']."</option>";;
         }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_levantamiento]);
-        }
+        if ($model->load(Yii::$app->request->post())) {
+            $transaction = $connection->beginTransaction();
+            try {
+            $model->save();
+            $query = "DELETE FROM ISPR_LevantamientoDetalle WHERE id_levantamiento=".$id;
+            $connection->createCommand($query)->execute();
+            /*************************************************************************************************/
+            //Fila	Item	Partida	Clasificación	UM	Naturaleza	Mes	Cantidad	Precio	Total	Indice	Observación
+            //  0   1       2       3               4       5               6       7               8       9       10      11
+            $detalle = explode("¬",$_POST['i_items']);
+            for ($i=0;$i < count($detalle) - 1;$i++) {
+                $campos = explode("#",$detalle[$i]);
+                $query = "SELECT descripcion
+                    FROM ISPR_Partida
+                    where id_partida=".$campos[2];
+                $partida = $connection->createCommand($query)->queryOne();
 
+                $query = "SELECT descripcion
+                    FROM ISPR_Clasificacion
+                    where id_clasificacion=".$campos[3];
+                $clasificacion = $connection->createCommand($query)->queryOne();
+
+
+                $query = "INSERT INTO ISPR_LevantamientoDetalle(id_levantamiento,id_naturaleza,id_partida,id_clasificacion,id_unidad_medida,
+                    descripcion_clasificacion,descripcion_partida,rubro,cantidad,precio,total,indice,mes,observacion) VALUES (".$model->id_levantamiento.",
+                    ".$campos[5].",".$campos[2].",".$campos[3].",".$campos[4].",'".$clasificacion['descripcion']."','".$partida['descripcion']."','".$campos[1]."',
+                    ".$campos[7].",".$campos[8].",".$campos[9].",".$campos[10].",".$campos[6].",'".$campos[11]."');";
+                $connection->createCommand($query)->execute();
+            }
+            $transaction->commit();
+            } catch (\Exception $msg) {
+                $transaction->rollBack();
+                throw $msg;
+            } catch (\Throwable $msg) {
+                $transaction->rollBack();
+                throw $msg;
+            }
+
+            return $this->redirect(['update', 'id' => $model->id_levantamiento]);
+        }
+            
         return $this->render('update', [
             'model' => $model,
             'partida' => $partida,
@@ -199,7 +236,7 @@ class LevantamientoController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        //$this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
@@ -226,6 +263,15 @@ class LevantamientoController extends Controller
         $query = "SELECT count(*) as conteo FROM ISPR_Partida
                 WHERE id_partida=".$partida." and activo=1";
         $pendientes = $connection->createCommand($query)->queryOne();
+        return Json::encode($pendientes);
+    }
+    
+    public function actionBuscarDetalle($id_levantamiento) {
+        $connection = \Yii::$app->db;
+
+        $query = "SELECT * FROM ISPR_LevantamientoDetalle
+                WHERE id_levantamiento=".$id_levantamiento;
+        $pendientes = $connection->createCommand($query)->queryAll();
         return Json::encode($pendientes);
     }
 }

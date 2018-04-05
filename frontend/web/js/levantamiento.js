@@ -1,5 +1,6 @@
 $(function() {
     titulo_detalle();
+    buscar_detalle();
 });
 
 /******************************************** VISTA******************************************************/
@@ -230,6 +231,35 @@ function buscar_partida() {
                 if (data.conteo==0) {
                     id_partida.value = "";
                 } 
+            }
+        });
+    }
+}
+
+function buscar_detalle() {
+    var id_levantamiento = trae('id');
+    var tabla = trae('listado_detalle');
+    var campos = new Array();
+    var i;
+
+    if (id_levantamiento.value!="") {
+        $.getJSON('../levantamiento/buscar-detalle',{id_levantamiento : id_levantamiento.value},function(data){
+            if (data!="") {
+                for (i=0; i < data.length; i++) {
+                    campos.push(i+1);
+                    campos.push(data[i].rubro);
+                    campos.push(data[i].id_partida);
+                    campos.push(data[i].id_clasificacion);
+                    campos.push(data[i].id_unidad_medida);
+                    campos.push(data[i].id_naturaleza);
+                    campos.push(data[i].mes);
+                    campos.push(data[i].cantidad);
+                    campos.push(data[i].precio);
+                    campos.push(data[i].total);
+                    campos.push(data[i].indice);
+                    campos.push(data[i].observacion);
+                    tabla.appendChild(add_filas(campos, 'td','editar_detalle####cancela_detalle','',11));
+                }
             }
         });
     }
