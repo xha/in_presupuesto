@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            'id_unidad_conexion',
+            //'id_unidad_conexion',
             'base_datos',
             'usuario',
             //'clave',

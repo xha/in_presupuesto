@@ -21,7 +21,7 @@ $this->registerCssFile('@web/css/general.css');
         <?= Html::submitButton("Actualizar",array('class'=>'btn btn-success')); ?>
     </center>
 
-	<?= $form->field($model, 'nivel_clasificacion')->dropDownList([0 => 0],['prompt' => 'Seleccione','onchange'=>'js:b_clasificacion(this);']); ?>
+    <?= $form->field($model, 'nivel_clasificacion')->dropDownList([0 => 0],['prompt' => 'Seleccione','onchange'=>'js:b_clasificacion(this);']); ?>
     
     <?= $form->field($model, 'id_clasificacion')->dropDownList(['prompt'=>'Seleccione']); ?>
     

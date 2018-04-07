@@ -46,10 +46,10 @@ class DetalleTransaccion extends \yii\db\ActiveRecord
     {
         return [
             [['id_transaccion', 'id_partida', 'id_clasificacion', 'id_unidad', 'cuenta_contable', 'asignacion', 'CodItem', 'nroLinea', 'descripcion', 'observacion'], 'required'],
-            [['id_transaccion', 'id_clasificacion', 'id_unidad', 'asignacion', 'nroLinea', 'signo', 'activo'], 'integer'],
+            [['id_transaccion', 'id_clasificacion', 'id_unidad', 'nroLinea', 'signo', 'activo'], 'integer'],
             [['id_partida', 'descripcion_clasificacion', 'descripcion_partida', 'cuenta_contable', 'CodItem', 'descripcion', 'observacion'], 'string'],
             [['cantidad', 'monto', 'montoIL', 'descuento'], 'number'],
-            [['id_transaccion'], 'exist', 'skipOnError' => true, 'targetClass' => ISPRTransaccion::className(), 'targetAttribute' => ['id_transaccion' => 'id_transaccion']],
+            [['id_transaccion'], 'exist', 'skipOnError' => true, 'targetClass' => Transaccion::className(), 'targetAttribute' => ['id_transaccion' => 'id_transaccion']],
         ];
     }
 
@@ -67,7 +67,6 @@ class DetalleTransaccion extends \yii\db\ActiveRecord
             'descripcion_clasificacion' => 'Descripcion Clasificacion',
             'descripcion_partida' => 'Descripcion Partida',
             'cuenta_contable' => 'Cuenta Contable',
-            'asignacion' => 'Asignacion',
             'CodItem' => 'Cod Item',
             'nroLinea' => 'Nro Linea',
             'descripcion' => 'Descripcion',
@@ -86,6 +85,6 @@ class DetalleTransaccion extends \yii\db\ActiveRecord
      */
     public function getTransaccion()
     {
-        return $this->hasOne(ISPRTransaccion::className(), ['id_transaccion' => 'id_transaccion']);
+        return $this->hasOne(Transaccion::className(), ['id_transaccion' => 'id_transaccion']);
     }
 }

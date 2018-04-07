@@ -40,7 +40,8 @@
                                         ['label' => 'Clasificación - Unidad', 'icon' => 'check', 'url' => ['../../frontend/web/clasificacion-unidad']],
                                         ['label' => 'Naturaleza del Gasto', 'icon' => 'check', 'url' => ['../../frontend/web/naturaleza']],
                                         ['label' => 'Unidad de Medida', 'icon' => 'check', 'url' => ['../../frontend/web/unidad-medida']],
-                                        ['label' => 'Productos', 'icon' => 'check', 'url' => ['../../frontend/web/cnu']],
+                                        ['label' => 'Unión Productos', 'icon' => 'check', 'url' => ['../../frontend/web/cnu']],
+                                        ['label' => 'Partidas - Cuentas', 'icon' => 'check', 'url' => ['../../frontend/web/partidas-cuentas']],
                                 ],];
                 $menuItems[] = ['label' => 'Formulación Presupuestaria', 'options' => ['class' => 'header']];
                 $menuItems[] = ['label' => 'Levantamiento de Inf.', 'icon' => 'balance-scale', 'url' => ['../../frontend/web/levantamiento']];
@@ -48,7 +49,7 @@
                 $menuItems[] = ['label' => 'Asignación', 'icon' => 'battery', 'url' => ['../../frontend/web/upa/index']];
                 $menuItems[] = ['label' => 'Modificación', 'icon' => 'battery-half', 'url' => ['../../frontend/web/upa/?tipo=M']];
                 $menuItems[] = ['label' => 'Éjecución', 'options' => ['class' => 'header']];
-                $menuItems[] = ['label' => 'Pre Compromiso', 'icon' => 'book', 'url' => ['../../frontend/web/upa/']];
+                $menuItems[] = ['label' => 'Solicitud de Compromiso', 'icon' => 'book', 'url' => ['../../frontend/web/transaccion/']];
                 $menuItems[] = ['label' => 'Reportes', 'options' => ['class' => 'header']];
             }
         ?>

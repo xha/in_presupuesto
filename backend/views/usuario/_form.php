@@ -6,7 +6,7 @@ use yii\helpers\ArrayHelper;
 use backend\models\Pregunta;
 use backend\models\Rol;
 use backend\models\Sadepo;
-
+use backend\models\Unidad;
 /* @var $this yii\web\View */
 /* @var $model app\models\Usuario */
 /* @var $form yii\widgets\ActiveForm */
@@ -22,7 +22,7 @@ use backend\models\Sadepo;
 
     <?= $form->field($model, 'cedula')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'clave')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'clave')->textInput(['maxlength' => true,'type'=>'password']) ?>
 
     <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
 

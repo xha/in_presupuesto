@@ -7,22 +7,13 @@ use yii\widgets\DetailView;
 /* @var $model frontend\Models\Transaccion */
 
 $this->title = $model->id_transaccion;
-$this->params['breadcrumbs'][] = ['label' => 'Transaccions', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Transacciones', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="transaccion-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id_transaccion], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id_transaccion], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
+        <?= Html::a('Actualizar', ['update', 'id' => $model->id_transaccion], ['class' => 'btn btn-primary']) ?>
     </p>
 
     <?= DetailView::widget([

@@ -32,6 +32,7 @@ class Transaccion extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    public $id_partida;
     public static function tableName()
     {
         return 'ISPR_Transaccion';
@@ -45,9 +46,9 @@ class Transaccion extends \yii\db\ActiveRecord
         return [
             [['id_transaccionO', 'id_usuario', 'activo'], 'integer'],
             [['nro_control', 'nro_factura', 'nro_orden', 'CodProv', 'DescripProv', 'id_autorizado', 'nombre_autorizado', 'concepto', 'tipo'], 'string'],
-            [['fecha', 'CodProv', 'DescripProv', 'total', 'tipo', 'id_usuario'], 'required'],
+            [['fecha', 'CodProv', 'DescripProv', 'total', 'tipo', 'id_usuario', 'asignacion'], 'required'],
             [['fecha', 'fecha_transaccion'], 'safe'],
-            [['total', 'descuento'], 'number'],
+            [['total', 'descuento', 'asignacion'], 'number'],
         ];
     }
 
@@ -57,31 +58,32 @@ class Transaccion extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_transaccion' => 'Id Transaccion',
+            'id_transaccion' => 'Id',
             'id_transaccionO' => 'Id Transaccion O',
             'nro_control' => 'Nro Control',
             'nro_factura' => 'Nro Factura',
             'nro_orden' => 'Nro Orden',
             'fecha' => 'Fecha',
             'fecha_transaccion' => 'Fecha Transaccion',
-            'CodProv' => 'Cod Prov',
-            'DescripProv' => 'Descrip Prov',
-            'id_autorizado' => 'Id Autorizado',
+            'CodProv' => 'Proveedor',
+            'DescripProv' => 'Nombre Proveedor',
+            'id_autorizado' => 'Autorizado',
             'nombre_autorizado' => 'Nombre Autorizado',
             'concepto' => 'Concepto',
             'total' => 'Total',
             'tipo' => 'Tipo',
             'descuento' => 'Descuento',
-            'id_usuario' => 'Id Usuario',
+            'id_usuario' => 'Usuario',
             'activo' => 'Activo',
+            'asignacion' => 'Período',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getISPRDetalleTransaccions()
+    public function getDetalleTransaccions()
     {
-        return $this->hasMany(ISPRDetalleTransaccion::className(), ['id_transaccion' => 'id_transaccion']);
+        return $this->hasMany(DetalleTransaccion::className(), ['id_transaccion' => 'id_transaccion']);
     }
 }

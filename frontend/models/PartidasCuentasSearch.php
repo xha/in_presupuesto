@@ -1,16 +1,16 @@
 <?php
 
-namespace backend\models;
+namespace frontend\Models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\UnidadConexion;
+use frontend\Models\PartidasCuentas;
 
 /**
- * UnidadConexionSearch represents the model behind the search form of `backend\models\UnidadConexion`.
+ * PartidasCuentasSearch represents the model behind the search form of `frontend\Models\PartidasCuentas`.
  */
-class UnidadConexionSearch extends UnidadConexion
+class PartidasCuentasSearch extends PartidasCuentas
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class UnidadConexionSearch extends UnidadConexion
     public function rules()
     {
         return [
-            [['puerto', 'id_unidad', 'activo'], 'integer'],
-            [['base_datos', 'usuario', 'clave', 'ip'], 'safe'],
+            [['id_pc', 'nrolinea', 'relacion', 'activo'], 'integer'],
+            [['id_partida', 'descripcion_partida', 'id_cuenta', 'descripcion_cuenta'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class UnidadConexionSearch extends UnidadConexion
      */
     public function search($params)
     {
-        $query = UnidadConexion::find();
+        $query = PartidasCuentas::find();
 
         // add conditions that should always apply here
 
@@ -59,15 +59,16 @@ class UnidadConexionSearch extends UnidadConexion
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'puerto' => $this->puerto,
-            'id_unidad' => $this->id_unidad,
+            'id_pc' => $this->id_pc,
+            'nrolinea' => $this->nrolinea,
+            'relacion' => $this->relacion,
             'activo' => $this->activo,
         ]);
 
-        $query->andFilterWhere(['like', 'base_datos', $this->base_datos])
-            ->andFilterWhere(['like', 'usuario', $this->usuario])
-            ->andFilterWhere(['like', 'clave', $this->clave])
-            ->andFilterWhere(['like', 'ip', $this->ip]);
+        $query->andFilterWhere(['like', 'id_partida', $this->id_partida])
+            ->andFilterWhere(['like', 'descripcion_partida', $this->descripcion_partida])
+            ->andFilterWhere(['like', 'id_cuenta', $this->id_cuenta])
+            ->andFilterWhere(['like', 'descripcion_cuenta', $this->descripcion_cuenta]);
 
         return $dataProvider;
     }

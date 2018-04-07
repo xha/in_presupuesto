@@ -53,10 +53,12 @@ $this->registerCssFile('../../../frontend/web/css/general.css');
     $(function() {
         buscar_usuarios();
         var msj_principal = trae('msj_principal').innerHTML;
-        if (msj_principal!="Registro Actualizado") {
-            oculta_mensaje('msj_principal',msj_principal,-1);
-        } else {
-            oculta_mensaje('msj_principal',msj_principal,1);
+        if (msj_principal!="") {
+            if (msj_principal!="Registro Actualizado") {
+                oculta_mensaje('msj_principal',msj_principal,-1);
+            } else {
+                oculta_mensaje('msj_principal',msj_principal,1);
+            }
         }
     });
     function titulo_usuario() {

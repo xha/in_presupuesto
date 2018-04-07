@@ -3,16 +3,16 @@
 namespace frontend\controllers;
 
 use Yii;
-use frontend\Models\Transaccion;
-use frontend\Models\TransaccionSearch;
+use frontend\Models\PartidasCuentas;
+use frontend\Models\PartidasCuentasSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\helpers\Json;
+
 /**
- * TransaccionController implements the CRUD actions for Transaccion model.
+ * PartidasCuentasController implements the CRUD actions for PartidasCuentas model.
  */
-class TransaccionController extends Controller
+class PartidasCuentasController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,12 +30,12 @@ class TransaccionController extends Controller
     }
 
     /**
-     * Lists all Transaccion models.
+     * Lists all PartidasCuentas models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new TransaccionSearch();
+        $searchModel = new PartidasCuentasSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +45,7 @@ class TransaccionController extends Controller
     }
 
     /**
-     * Displays a single Transaccion model.
+     * Displays a single PartidasCuentas model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -58,35 +58,34 @@ class TransaccionController extends Controller
     }
 
     /**
-     * Creates a new Transaccion model.
+     * Creates a new PartidasCuentas model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Transaccion();
+        $model = new PartidasCuentas();
         $connection = \Yii::$app->db;
+        $partida = array();
         /********************** PARTIDAS ***************************************/
-        $query = "SELECT asignacion from ISPR_Upa WHERE tipo_operacion='A' group by asignacion order by asignacion";
+        $query = "SELECT id_partida,denominacion FROM ISPR_Partida where activo=1 and movimiento=1 order by id_partida desc";
         $data1 = $connection->createCommand($query)->queryAll();
         for($i=0;$i<count($data1);$i++) {
-            $asignacion[$data1[$i]['asignacion']]= $data1[$i]['asignacion'];
+            $partida[]= $data1[$i]['id_partida']." - ".$data1[$i]['denominacion'];
         }
-
-        if ($model->load(Yii::$app->request->post())) {
-            $model->save();
-            //return $this->redirect(['view', 'id' => $model->id_transaccion]);
-            return $this->redirect(['index']);
+        
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id_pc]);
         }
 
         return $this->render('create', [
             'model' => $model,
-            'asignacion' => $asignacion,
+            'partida' => $partida,
         ]);
     }
 
     /**
-     * Updates an existing Transaccion model.
+     * Updates an existing PartidasCuentas model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -95,18 +94,27 @@ class TransaccionController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $connection = \Yii::$app->db;
+        $partida = array();
+        /********************** PARTIDAS ***************************************/
+        $query = "SELECT id_partida,denominacion FROM ISPR_Partida where activo=1 and movimiento=1 order by id_partida desc";
+        $data1 = $connection->createCommand($query)->queryAll();
+        for($i=0;$i<count($data1);$i++) {
+            $partida[]= $data1[$i]['id_partida']." - ".$data1[$i]['denominacion'];
+        }
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_transaccion]);
+            return $this->redirect(['view', 'id' => $model->id_pc]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'partida' => $partida,
         ]);
     }
 
     /**
-     * Deletes an existing Transaccion model.
+     * Deletes an existing PartidasCuentas model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -114,52 +122,27 @@ class TransaccionController extends Controller
      */
     public function actionDelete($id)
     {
+        $connection = \Yii::$app->db;
+        $query = "UPDATE ISPR_Partidas_CtasC SET activo=0 WHERE id_pc=".$id;
+        $connection->createCommand($query)->query();
         //$this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the Transaccion model based on its primary key value.
+     * Finds the PartidasCuentas model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Transaccion the loaded model
+     * @return PartidasCuentas the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Transaccion::findOne($id)) !== null) {
+        if (($model = PartidasCuentas::findOne($id)) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
-    }
-    /**************** BUSQUEDAS ***********************************************************/ 
-    public function actionBuscarClasificacion($asignacion) {
-        $id_unidad = Yii::$app->user->identity->id_unidad;
-        $connection = \Yii::$app->db;
-
-        $query = "SELECT id_clasificacion,descripcion_clasificacion 
-                FROM ISPR_Upa
-                WHERE asignacion=".$asignacion." and verificado=1 and tipo_operacion IN ('A','M')
-                and id_unidad=".$id_unidad."
-                GROUP BY id_clasificacion,descripcion_clasificacion
-                ORDER BY id_clasificacion,descripcion_clasificacion asc";
-        $pendientes = $connection->createCommand($query)->queryAll();
-        return Json::encode($pendientes);
-    }
-    
-    public function actionBuscarPartida($asignacion,$clasificacion) {
-        $id_unidad = Yii::$app->user->identity->id_unidad;
-        $connection = \Yii::$app->db;
-
-        $query = "SELECT id_partida
-                FROM ISPR_Upa
-                WHERE asignacion=".$asignacion." and verificado=1 and tipo_operacion IN ('A','M')
-                and id_unidad=".$id_unidad." and id_clasificacion=".$clasificacion."
-                GROUP BY id_partida
-                ORDER BY id_partida asc";
-        $pendientes = $connection->createCommand($query)->queryAll();
-        return Json::encode($pendientes);
     }
 }

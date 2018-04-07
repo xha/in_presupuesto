@@ -7,41 +7,38 @@ use yii\grid\GridView;
 /* @var $searchModel frontend\Models\TransaccionSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Transaccions';
+$this->title = 'Solicitud de Compromiso';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="transaccion-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <p>
-        <?= Html::a('Create Transaccion', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Crear Nueva Solicitud de Compromiso', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            //['class' => 'yii\grid\SerialColumn'],
 
             'id_transaccion',
-            'id_transaccionO',
-            'nro_control',
-            'nro_factura',
+            //'id_transaccionO',
+            //'nro_control',
             'nro_orden',
-            //'fecha',
+            'nro_factura',
+            'fecha',
             //'fecha_transaccion',
-            //'CodProv',
+            'CodProv',
             //'DescripProv',
             //'id_autorizado',
             //'nombre_autorizado',
             //'concepto',
-            //'total',
-            //'tipo',
+            'total',
+            'tipo',
             //'descuento',
             //'id_usuario',
-            //'activo',
+            'activo:boolean',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

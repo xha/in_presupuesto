@@ -129,7 +129,7 @@ class CnuController extends Controller
         $connection = \Yii::$app->db;
 
         $query = "SELECT count(*) as conteo FROM ISPR_Partida
-                WHERE id_partida='".$id."' and activo=1";
+                WHERE id_partida='".$id."' and movimiento=1 and activo=1";
         $pendientes = $connection->createCommand($query)->queryOne();
         return $pendientes['conteo'];
     }
@@ -156,7 +156,7 @@ class CnuController extends Controller
         $connection = \Yii::$app->db;
 
         $query = "SELECT count(*) as conteo FROM ISPR_Partidas_CtasC
-                WHERE cuentaC='".$id."'";
+                WHERE id_cuenta='".$id."'";
         $pendientes = $connection->createCommand($query)->queryOne();
         return $pendientes['conteo'];
     }
