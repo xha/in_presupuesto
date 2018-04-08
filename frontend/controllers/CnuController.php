@@ -54,8 +54,6 @@ class CnuController extends Controller
         $model = new Cnu();
         $connection = \Yii::$app->db;
         $partida = array();
-        $clasificacion = array();
-        $unidad = array();
         
         /********************** PARTIDAS ***************************************/
         $query = "SELECT id_partida,denominacion FROM ISPR_Partida where activo=1 and movimiento=1 order by id_partida desc";
@@ -63,35 +61,55 @@ class CnuController extends Controller
         for($i=0;$i<count($data1);$i++) {
             $partida[]= $data1[$i]['id_partida']." - ".$data1[$i]['denominacion'];
         }
-        /********************** CLASIFICACION **********************************/
-        $query = "SELECT id_clasificacion,descripcion FROM ISPR_Clasificacion where activo=1 order by descripcion desc";
-        $data1 = $connection->createCommand($query)->queryAll();
-        for($i=0;$i<count($data1);$i++) {
-            $clasificacion[]= $data1[$i]['id_clasificacion']." - ".$data1[$i]['descripcion'];
-        }
-        /********************** UNIDAD *****************************************/
-        $query = "SELECT id_unidad,descripcion FROM ISPR_Unidad where activo=1 order by descripcion desc";
-        $data1 = $connection->createCommand($query)->queryAll();
-        for($i=0;$i<count($data1);$i++) {
-            $unidad[]= $data1[$i]['id_unidad']." - ".$data1[$i]['descripcion'];
-        }
-        /********************** CUENTA CONTABLE ********************************/
-        $query = "SELECT cuentaC,descripCC FROM ISPR_Partidas_CtasC where estatus=1 group by cuentaC,descripCC order by descripCC desc";
-        $data1 = $connection->createCommand($query)->queryAll();
-        for($i=0;$i<count($data1);$i++) {
-            $cuentac[]= $data1[$i]['cuentaC']." - ".$data1[$i]['descripCC'];
-        }
-        
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+
+        if ($model->load(Yii::$app->request->post())) {
+            $partida = explode(" - ",$model->id_partida);
+            $model->id_partida = $partida[0];
+            $query = "SELECT id_cnu FROM ISPR_CNU where id_partida='".$model->id_partida."' and id_cuenta='".$model->id_cuenta."' and CodItem='".$model->coditem."'";
+            $data = $connection->createCommand($query)->queryOne();
+            
+            $id=0;
+            if ($data['id_cnu']!="") {
+                $query = "UPDATE ISPR_CNU SET activo=".$model->activo.",EsServicio=".$model->esservicio." where id_cnu=".$data['id_cnu'];
+                $connection->createCommand($query)->execute();
+                $id=$data['id_cnu'];
+            } else {
+                $model->save();
+                $id=$model->id_cnu;
+            }
+            
+            return $this->redirect(['view', 'id' => $id]);
         }
 
         return $this->render('create', [
             'model' => $model,
             'partida' => $partida,
-            'clasificacion' => $clasificacion,
-            'unidad' => $unidad,
-            'cuentac' => $cuentac,
+        ]);
+    }
+    
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+        $connection = \Yii::$app->db;
+        $partida = array();
+        
+        /********************** PARTIDAS ***************************************/
+        $query = "SELECT id_partida,denominacion FROM ISPR_Partida where activo=1 and movimiento=1 order by id_partida desc";
+        $data1 = $connection->createCommand($query)->queryAll();
+        for($i=0;$i<count($data1);$i++) {
+            $partida[]= $data1[$i]['id_partida']." - ".$data1[$i]['denominacion'];
+        }
+        
+        if ($model->load(Yii::$app->request->post())) {
+            $partida = explode(" - ",$model->id_partida);
+            $model->id_partida = $partida[0];
+            $model->save();
+            return $this->redirect(['view', 'id' => $model->id_cnu]);
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+            'partida' => $partida,
         ]);
     }
 
@@ -124,40 +142,34 @@ class CnuController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-    /**************** BUSQUEDAS ***********************************************************/ 
+    /**************** JSON ***********************************************************/ 
     public function actionBuscarPartida($id) {
         $connection = \Yii::$app->db;
 
-        $query = "SELECT count(*) as conteo FROM ISPR_Partida
-                WHERE id_partida='".$id."' and movimiento=1 and activo=1";
-        $pendientes = $connection->createCommand($query)->queryOne();
-        return $pendientes['conteo'];
+        $query = "SELECT * FROM ISPR_Partidas_CtasC
+                WHERE id_partida='".$id."' and activo=1";
+        $pendientes = $connection->createCommand($query)->queryAll();
+        return Json::encode($pendientes);
     }
     
-    public function actionBuscarClasificacion($id) {
+    public function actionBuscarItem($id) {
         $connection = \Yii::$app->db;
-
-        $query = "SELECT count(*) as conteo FROM ISPR_Clasificacion
-                WHERE id_clasificacion=".$id." and activo=1";
-        $pendientes = $connection->createCommand($query)->queryOne();
-        return $pendientes['conteo'];
-    }
-    
-    public function actionBuscarUnidad($id) {
-        $connection = \Yii::$app->db;
-
-        $query = "SELECT count(*) as conteo FROM ISPR_Unidad
-                WHERE id_unidad=".$id." and activo=1";
-        $pendientes = $connection->createCommand($query)->queryOne();
-        return $pendientes['conteo'];
-    }
-    
-    public function actionBuscarCuenta($id) {
-        $connection = \Yii::$app->db;
-
-        $query = "SELECT count(*) as conteo FROM ISPR_Partidas_CtasC
-                WHERE id_cuenta='".$id."'";
-        $pendientes = $connection->createCommand($query)->queryOne();
-        return $pendientes['conteo'];
+        
+        $query = "SELECT count(*) as conteo FROM SAPROD
+                WHERE CodProd='".$id."' and Activo=1";
+        $producto = $connection->createCommand($query)->queryOne();
+        
+        $pendiente = "";
+        if ($producto['conteo']>0) {
+            $pendiente = 1;
+        } else {
+            $query = "SELECT count(*) as conteo FROM SASERV
+                WHERE CodServ='".$id."' and Activo=1";
+            $servicio = $connection->createCommand($query)->queryOne();
+            
+            if ($servicio['conteo']>0) $pendiente = 2;
+        }
+        
+        return $pendiente;
     }
 }

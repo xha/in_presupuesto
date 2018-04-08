@@ -83,6 +83,7 @@ input[readonly] {
 .inicial00 {
     width: 95%;
     float: left;
+    overflow-x: scroll;
 }
 
 .inicial_1 {
@@ -98,6 +99,7 @@ input[readonly] {
 
 .inicial11 {
     width: 90%;
+    overflow-x: scroll;
 }
 
 .inicial_em0 {

@@ -8,7 +8,7 @@ use frontend\Models\PartidasCuentasSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use yii\helpers\Json;
 /**
  * PartidasCuentasController implements the CRUD actions for PartidasCuentas model.
  */
@@ -74,8 +74,20 @@ class PartidasCuentasController extends Controller
             $partida[]= $data1[$i]['id_partida']." - ".$data1[$i]['denominacion'];
         }
         
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_pc]);
+        if ($model->load(Yii::$app->request->post())) {
+            $query = "SELECT id_pc FROM ISPR_Partidas_CtasC where id_partida='".$model->id_partida."' and id_cuenta='".$model->id_cuenta."'";
+            $data = $connection->createCommand($query)->queryOne();
+            
+            $id=0;
+            if ($data['id_pc']!="") {
+                $query = "UPDATE ISPR_Partidas_CtasC SET activo=".$model->activo." where id_partida='".$model->id_partida."' and id_cuenta='".$model->id_cuenta."'";
+                $connection->createCommand($query)->execute();
+                $id=$data['id_pc'];
+            } else {
+                $model->save();
+                $id=$model->id_pc;
+            }
+            return $this->redirect(['view', 'id' => $id]);
         }
 
         return $this->render('create', [
@@ -103,7 +115,16 @@ class PartidasCuentasController extends Controller
             $partida[]= $data1[$i]['id_partida']." - ".$data1[$i]['denominacion'];
         }
         
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $query = "SELECT count(*) as conteo FROM ISPR_Partidas_CtasC where id_partida='".$model->id_partida."' and id_cuenta='".$model->id_cuenta."'";
+            $data = $connection->createCommand($query)->queryOne();
+            if ($data['conteo']>0) {
+                $query = "UPDATE ISPR_Partidas_CtasC SET activo=".$model->activo." where id_partida='".$model->id_partida."' and id_cuenta='".$model->id_cuenta."'";
+                $connection->createCommand($query)->execute();
+            } else {
+                $model->save();
+            }
+            
             return $this->redirect(['view', 'id' => $model->id_pc]);
         }
 
@@ -144,5 +165,14 @@ class PartidasCuentasController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    /******************************** JSON ******************************************/
+    public function actionBuscarCuenta($id) {
+        $connection = \Yii::$app->db;
+
+        $query = "SELECT count(*) as conteo FROM ISPR_Partidas_CtasC
+                WHERE id_cuenta='".$id."'";
+        $pendientes = $connection->createCommand($query)->queryOne();
+        return $pendientes['conteo'];
     }
 }

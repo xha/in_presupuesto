@@ -1,58 +1,44 @@
 /******************************************************** JSON *************************************************/
-function buscar_unidad() {
-    var id = trae('cnu-id_unidad');
-    var valor = id.value.split(" - ");
-
-    if (valor[0]!="") {
-        $.get('../cnu/buscar-unidad',{id : valor[0]},function(data){
-            if (data==0) {
-                id.value = "";
-            }
-        });
-    } else {
-        id.value = "";
-    }
-}
-
-function buscar_clasificacion() {
-    var id = trae('cnu-id_clasificacion')
-    var valor = id.value.split(" - ");
-
-    if (valor[0]!="") {
-        $.get('../cnu/buscar-clasificacion',{id : valor[0]},function(data){
-            if (data==0) {
-                id.value = "";
-            }
-        });
-    } else {
-        id.value = "";
-    }
-}
 function buscar_partida() {
-    var id = trae('cnu-id_partida');
-    var valor = id.value.split(" - ");
+    var partida = trae('cnu-id_partida');
+    var cuenta = trae('cnu-id_cuenta');
+    var valor = partida.value.split(" - ");
+    var i;
 
     if (valor[0]!="") {
-        $.get('../cnu/buscar-partida',{id : valor[0]},function(data){
-            if (data=="0") {
-                id.value = "";
+        $.getJSON('../cnu/buscar-partida',{id : valor[0]},function(data){
+            if (data.length>0) {
+                for (i=0; i < data.length; i++) {
+                    cuenta[i+1] = new Option(data[i].id_cuenta+" - "+data[i].descripcion_cuenta,data[i].id_cuenta,"","");
+                }
+            } else {
+                partida.value = "";
+                cuenta.value = "";
             }
         });
     } else {
-        id.value = "";
+        partida.value = "";
+        cuenta.value = "";
     }
 }
-function buscar_cuenta() {
-    var id = trae('cnu-cuentac');
-    var valor = id.value.split(" - ");
 
-    if (valor[0]!="") {
-        $.get('../cnu/buscar-cuenta',{id : valor[0]},function(data){
-            if (data==0) {
-                id.value = "";
+function buscar_item() {
+    var item = trae('cnu-coditem').value;
+    var servicio = trae('cnu-esservicio');
+
+    if (item!="") {
+        $.get('../cnu/buscar-item',{id : item},function(data){
+            if (data!="") {
+                if (data==1) {
+                    servicio.value = 0;
+                } else {
+                    servicio.value = 1;
+                }
+            } else {
+                item.value = "";
             }
         });
     } else {
-        id.value = "";
+        item.value = "";
     }
 }

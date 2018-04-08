@@ -75,71 +75,77 @@ $fecha=date('d-m-Y',$fecha);
     <?= $form->field($model, 'id_autorizado')->textInput(['class'=>'col-md-1 texto']) ?>
     <?= $form->field($model, 'nombre_autorizado')->textInput(['class'=>'col-md-6 texto']) ?>
     <br /><br />
+    <?= $form->field($model, 'id_clasificacion')->dropDownList(['' => 'Seleccione'],['class'=>'col-md-6 texto','onchange'=>'js:buscar_partida();']); ?>
+    <?= $form->field($model, 'id_partida')->dropDownList(['' => 'Seleccione'],['class'=>'col-md-2 texto']); ?>
+    <br /><br />
     <?= $form->field($model, 'concepto')->textArea(['rows'=>2, 'maxlength'=>2000]) ?>
+    <?php 
+        Modal::begin([
+            "id" => "m_servicio",
+            "header" => "<h3>Listado de Items</h3>",
+            "size" => "modal-lg",
+            "toggleButton" => ["label" => "Agregar Producto / Servicio", 'class' => 'btn btn-primary', 'id' => 'b_servicio'],
+        ]);
 
-    <div style="border-top: 1px solid red; overflow-x: scroll; padding: 3px">
-        <table class="inicial11">
+       echo "<select id='m_esprod' class='texto texto medio'>
+                <option value='0'>Productos</option>
+                <option value='1'>Servicios</option>
+           </select>
+            <input class='texto texto medio' id='m_producto' onkeypress='return presiona(event,buscar_items);' />
+            <label class='btn btn-primary' onclick='buscar_items()'>Buscar</label>
+            <img id='img_producto' style='visibility: hidden' src='../../../img/preloader.gif' />
+            <div style='max-height: 600px; overflow: scroll; width: 100%' >
+                <h4 style='color: red' id='h_bloqueo'></h4>
+                <table id='resultado_producto' class='tablas inicial00' style='width: 98%'></table>
+            </div>";
+
+        Modal::end();
+    ?>
+    <div class="inicial00">
+        <table class="inicial00">
             <tr>
                 <td>
-                    <b>Clasificaci&oacute;n *</b><br />
-                    <select id="d_clasificacion" name="d_clasificacion" class='texto texto-medio' onchange="buscar_partida()">
-                        <option value="">Seleccione</option>
-                    </select>
-                </td> 
-                <td>
-                    <b>Partida *</b><br />
-                    <select id="d_partida" name="d_partida" class='texto texto-corto'>
-                        <option value="">Seleccione</option>
-                    </select>
-                </td> 
-                <td>
-                    <b>Item *</b><br />
-                    <input id="d_item" name="d_item" class="texto texto-corto" />
-                    <!--<select id="d_item" name="d_item" class='texto texto-corto'>
-                        <option value="">Seleccione</option>
-                    </select>-->
-                </td> 
-                <td>
-                    <b>Descripción</b><br />
-                    <input id="d_item_descripcion" name="d_item_descripcion" class="texto texto-medio" />
-                </td>
-                <td>
-                    <button type="button" class="btn btn-primary" id="d_agregar" onclick="valida_detalle()"><br />Agregar<br /><br /></button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <b>Fila</b><br />
+                    Fila<br />
                     <input id="d_fila" maxlength="5" class="texto texto-xc" readonly="true" />
                 </td>
                 <td>
-                    <b>Cantidad *</b><br />
+                    Descripci&oacute;n *<br />
+                    <input id="d_nombre" maxlength="120" class="texto texto-largo" />
+                </td> 
+                <td>
+                    Cantidad *<br />
                     <input id="d_cantidad" maxlength="10" class="texto texto-ec" 
-                     onkeypress="return entero(event);" onkeyup="valida_cantidad(this.id)" onblur='calcula_total()' />
+                     onkeypress="return entero(event);" onkeyup="valida_cantidad(this.id)" />
                 </td>
                 <td>
-                    <b>Precio *</b><br />
+                    Precio *<br />
                     <input id="d_precio" maxlength="20" class="texto texto-ec" 
-                     onkeypress="return entero(event);" onkeyup="valida_cantidad(this.id)" onblur='calcula_total()' />
+                     onkeypress="return entero(event);" onkeyup="valida_cantidad(this.id)" />
                 </td>
                 <td>
-                    <b>Total Item</b><br />
-                    <input id="d_total" readonly maxlength="20" class="texto texto-corto" />
+                    Exento<br />
+                    <input id="es_exento" class="texto texto-xc" readonly="true" />
+                </td>
+                <td>
+                    Total Item<br />
+                    <input id="d_total" readonly maxlength="20" class="texto texto-ec" />
+                </td>
+                <td>
+                    <button type="button" class="btn btn-primary" id="d_agregar" onclick="valida_detalle()">Actualizar</button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    Observaciones:<br />
+                    <input id="d_observacion" maxlength="500" class="texto texto-xl" />
                 </td>
                 <td valign='bottom' align="left">
                     <button type="button" class="btn btn-default" onclick="limpiar_detalle()">Limpiar</button>
                 </td>
             </tr>
-            <tr>
-                <td colspan="5">
-                    <b>Observaciones:</b><br />
-                    <input id="d_observacion" maxlength="500" class="form-control" />
-                </td>
-            </tr>
         </table>
-        <br />
-        <table class="tablas inicial11" style="margin-top: 10px" id="listado_detalle"></table>
     </div>
+    <table class="tablas inicial_em2" style="margin-top: 10px" id="listado_detalle"></table>
     <?php ActiveForm::end(); ?>
 
 </div>

@@ -17,25 +17,6 @@ $this->registerCssFile('@web/css/general.css');
     <center>
         <?= Html::submitButton("Actualizar",['class'=>'btn btn-success']); ?>
     </center>
-    <b>Unidad</b><br />
-    <?= $form->field($model, 'id_unidad')->label(false)->widget(\yii\jui\AutoComplete::classname(), [
-            'clientOptions' => [
-                'source' => $unidad,
-                'minLength'=>'6', 
-            ],
-            'options' => ['class' => 'form-control', 'onblur'=>'js:buscar_unidad();'],
-        ]);
-    ?>
-
-    <b>Clasificaci&oacute;n</b><br />
-    <?= $form->field($model, 'id_clasificacion')->label(false)->widget(\yii\jui\AutoComplete::classname(), [
-            'clientOptions' => [
-                'source' => $clasificacion,
-                'minLength'=>'6', 
-            ],
-            'options' => ['class' => 'form-control', 'onblur'=>'js:buscar_clasificacion();'],
-        ]);
-    ?>
 
     <b>Partida</b><br />
     <?= $form->field($model, 'id_partida')->label(false)->widget(\yii\jui\AutoComplete::classname(), [
@@ -47,19 +28,13 @@ $this->registerCssFile('@web/css/general.css');
         ]);
     ?>
 
-    <b>Cuenta Contable</b><br />
-    <?= $form->field($model, 'cuentaC')->label(false)->widget(\yii\jui\AutoComplete::classname(), [
-            'clientOptions' => [
-                'source' => $cuentac,
-                'minLength'=>'6', 
-            ],
-            'options' => ['class' => 'form-control', 'onblur'=>'js:buscar_cuenta();'],
-        ]);
-    ?>
+    <?= $form->field($model, 'id_cuenta')->dropDownList(["" => "Seleccione"]); ?>
     
-    <?= $form->field($model, 'CodItem')->textInput() ?>
-
     <?= $form->field($model, 'EsServicio')->dropDownList(['0' => 'NO', '1' => 'SI']); ?>
+    
+    <?= $form->field($model, 'CodItem')->textInput(['onblur'=>'js:buscar_item();']) ?>
+    
+    <?= $form->field($model, 'activo')->dropDownList(['1' => 'SI', '0' => 'NO']); ?>
 
     <?php ActiveForm::end(); ?>
 

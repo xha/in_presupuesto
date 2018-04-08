@@ -27,12 +27,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id_cnu',
-            'id_unidad',
-            'id_clasificacion',
+            'id_cuenta',
             'id_partida',
             'CodItem',
             'EsServicio:boolean',
-            'cuentaC',
+            'activo:boolean',
         ],
     ]) ?>
 

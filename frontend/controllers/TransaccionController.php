@@ -134,7 +134,7 @@ class TransaccionController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-    /**************** BUSQUEDAS ***********************************************************/ 
+    /**************** JSON ***********************************************************/ 
     public function actionBuscarClasificacion($asignacion) {
         $id_unidad = Yii::$app->user->identity->id_unidad;
         $connection = \Yii::$app->db;
@@ -162,4 +162,23 @@ class TransaccionController extends Controller
         $pendientes = $connection->createCommand($query)->queryAll();
         return Json::encode($pendientes);
     }
+    
+    public function actionBuscarProducto($codigo, $servicio) {
+        $connection = \Yii::$app->db;
+
+        if ($servicio==1) {
+            $query = "SELECT CodServ as Codigo, CONCAT(Descrip,Descrip2,Descrip3) as Descrip, Precio1 as Costo,EsExento,1 as EsServ
+                    from SASERV
+                    where Activo=1 and (CodServ like '%".$codigo."%' OR Descrip like '%".$codigo."%' OR Descrip2 like '%".$codigo."%' 
+                    OR Descrip3 like '%".$codigo."%')";
+        } else {
+            $query = "SELECT CodProd as Codigo, CONCAT(Descrip,Descrip2,Descrip3) as Descrip, Precio1 as Costo,EsExento,0 as EsServ
+                    from SAPROD
+                    where Activo=1 and (CodProd like '%".$codigo."%' OR Descrip like '%".$codigo."%' OR Descrip2 like '%".$codigo."%' 
+                    OR Descrip3 like '%".$codigo."%')";
+        }
+        
+        $pendientes = $connection->createCommand($query)->queryAll();
+        return Json::encode($pendientes);
+    } 
 }

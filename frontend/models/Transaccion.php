@@ -33,6 +33,7 @@ class Transaccion extends \yii\db\ActiveRecord
      * @inheritdoc
      */
     public $id_partida;
+    public $id_clasificacion;
     public static function tableName()
     {
         return 'ISPR_Transaccion';
@@ -76,6 +77,8 @@ class Transaccion extends \yii\db\ActiveRecord
             'id_usuario' => 'Usuario',
             'activo' => 'Activo',
             'asignacion' => 'Período',
+            'id_clasificacion' => 'Clasificación',
+            'id_partida' => 'Partida',
         ];
     }
 

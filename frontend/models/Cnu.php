@@ -3,6 +3,9 @@
 namespace frontend\models;
 
 use Yii;
+use backend\models\Unidad;
+use frontend\models\Clasificacion;
+use frontend\models\Partida;
 
 /**
  * This is the model class for table "ISPR_CNU".
@@ -31,9 +34,9 @@ class Cnu extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_unidad', 'id_partida', 'CodItem', 'cuentaC'], 'required'],
-            [['EsServicio'], 'integer'],
-            [['id_partida', 'CodItem', 'cuentaC', 'id_unidad', 'id_clasificacion'], 'string'],
+            [['id_partida', 'id_cuenta','CodItem'], 'required'],
+            [['EsServicio', 'activo'], 'integer'],
+            [['id_partida', 'id_cuenta', 'CodItem'], 'string'],
         ];
     }
 
@@ -44,12 +47,16 @@ class Cnu extends \yii\db\ActiveRecord
     {
         return [
             'id_cnu' => 'Id Cnu',
-            'id_unidad' => 'Unidad',
-            'id_clasificacion' => 'Clasificacion',
+            'id_cuenta' => 'Cuenta',
             'id_partida' => 'Partida',
-            'CodItem' => 'Producto',
+            'CodItem' => 'Item',
             'EsServicio' => 'Es Servicio',
-            'cuentaC' => 'Cuenta C',
+            'activo' => 'Activo',
         ];
+    }
+    
+    public function getCnuPartida()
+    {
+        return $this->hasOne(Partida::className(), ['id_partida' => 'id_partida']);
     }
 }

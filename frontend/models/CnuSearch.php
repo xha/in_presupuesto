@@ -18,8 +18,8 @@ class CnuSearch extends Cnu
     public function rules()
     {
         return [
-            [['id_cnu', 'id_unidad', 'id_clasificacion', 'EsServicio'], 'integer'],
-            [['id_partida', 'CodItem', 'cuentaC'], 'safe'],
+            [['id_cnu', 'activo', 'EsServicio'], 'integer'],
+            [['id_partida', 'id_cuenta', 'CodItem'], 'safe'],
         ];
     }
 
@@ -60,14 +60,13 @@ class CnuSearch extends Cnu
         // grid filtering conditions
         $query->andFilterWhere([
             'id_cnu' => $this->id_cnu,
-            'id_unidad' => $this->id_unidad,
-            'id_clasificacion' => $this->id_clasificacion,
             'EsServicio' => $this->EsServicio,
+            'activo' => $this->activo,
         ]);
 
         $query->andFilterWhere(['like', 'id_partida', $this->id_partida])
-            ->andFilterWhere(['like', 'CodItem', $this->CodItem])
-            ->andFilterWhere(['like', 'cuentaC', $this->cuentaC]);
+            ->andFilterWhere(['like', 'id_cuenta', $this->id_cuenta])
+            ->andFilterWhere(['like', 'CodItem', $this->CodItem]);
 
         return $dataProvider;
     }
