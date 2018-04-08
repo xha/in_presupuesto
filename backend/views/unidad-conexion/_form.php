@@ -47,8 +47,8 @@ use backend\models\Unidad;
         var img_load = document.getElementById('img_load');
 
         probar_conexion.innerHTML = "";
-        img_load.style.visibility = "visible";
         if ((bd!="") && (ip!="") && (clave!="") && (usuario!="")) {
+            img_load.style.visibility = "visible";
             if (puerto.value=="") puerto.value="1433";
             $.get('../unidad-conexion/buscar-conexion',{bd : bd, ip : ip, clave : clave, usuario : usuario, puerto : puerto.value},function(data){
                 probar_conexion.innerHTML = data;

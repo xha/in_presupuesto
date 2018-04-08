@@ -23,11 +23,11 @@ use yii\helpers\Html;
                     if (Yii::$app->user->isGuest) {
                     } else {
                 ?>              
-                    <?php /* Html::a(
+                    <?= Html::a(
                         'Logout (Usuario: '.Yii::$app->user->identity->usuario.', Ubic: '.Yii::$app->user->identity->id_unidad.')',
                         ['/site/logout'],
                         ['data-method' => 'post']
-                    )*/ ?>
+                    ) ?>
                 <?php 
                     };
                 ?>

@@ -76,7 +76,6 @@ class LevantamientoController extends Controller
         for($i=0;$i<count($data1);$i++) {
             $partida[]= $data1[$i]['id_partida'];
         }
-        
         /********************** CLASIFICACION ***************************************/
         $query = "SELECT c.id_clasificacion,c.descripcion 
                 FROM ISPR_Clasificacion c, ISPR_ClasificacionUnidad u 
