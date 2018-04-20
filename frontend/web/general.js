@@ -264,28 +264,29 @@ function add_filas(row, clase, funcion, falso, limite, identi) {
                     switch(i) {
                         case 0:
                             imagen.src = "../../../img/edit.png";
-                            eval("imagen.onclick = function(){"+funciones[i]+"(this.tittle);}");
                         break;
                         case 1:
                             imagen.src = "../../../img/imprimir.png";
-                            eval("imagen.onclick = function(){"+funciones[i]+"(this.tittle);}");
                         break;
                         case 2:
                             imagen.src = "../../../img/buscar.png";
-                            eval("imagen.onclick = function(){"+funciones[i]+"(this.tittle);}");
                         break;
                         case 3:
                             imagen.src = "../../../img/devolver.png";
-                            eval("imagen.onclick = function(){"+funciones[i]+"(this.tittle);}");
                         break;
                         case 4:
                             imagen.src = "../../../img/delete.png";
-                            eval("imagen.onclick = function(){"+funciones[i]+"(this.tittle);}");
+                        break;
+                        case 5:
+                            imagen.src = "../../../img/pie.png";
+                        break;
+                        case 6:
+                            imagen.src = "../../../img/bar.png";
                         break;
                         default:
                             imagen.src = "../../../img/delete.png";
-                            eval("imagen.onclick = function(){"+funciones[i]+"(this.tittle);}");
                     }
+                    eval("imagen.onclick = function(){"+funciones[i]+"(this.tittle);}");
                     td.appendChild(imagen);
                 }
             }
