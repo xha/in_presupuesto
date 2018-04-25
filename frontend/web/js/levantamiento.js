@@ -246,6 +246,7 @@ function buscar_detalle() {
         $.getJSON('../levantamiento/buscar-detalle',{id_levantamiento : id_levantamiento.value},function(data){
             if (data!="") {
                 for (i=0; i < data.length; i++) {
+                    campos.length = 0;
                     campos.push(i+1);
                     campos.push(data[i].rubro);
                     campos.push(data[i].id_partida);

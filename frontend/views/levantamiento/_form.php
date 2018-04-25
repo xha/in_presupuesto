@@ -43,7 +43,7 @@ if (isset($_GET['id'])==1) {
     <br /><br />
     <div id="msj_principal"></div>
     <table class="inicial11">
-        <tr>
+        <tr height="70">
             <td>
                 <b>Clasificaci&oacute;n *</b><br />
                 <select id="levantamiento-id_clasificacion" name="Levantamiento[id_clasificacion]" class='texto texto-medio'>
@@ -74,23 +74,23 @@ if (isset($_GET['id'])==1) {
                 <button type="button" class="btn btn-primary" id="d_agregar" onclick="valida_detalle()"><br />Agregar<br /><br /></button>
             </td>
         </tr>
-        <tr>
+        <tr height="70">
             <td>
                 <b>Unidad de Medida *</b><br />
                 <?= Html::activeDropDownList($model, 'id_unidad_medida',
-                    ArrayHelper::map(UnidadMedida::find()->where(['activo' => '1'])->OrderBy('descripcion')->all(), 'id_unidad_medida', 'descripcion', 'id_unidad_medida'), ['class'=>'texto texto-corto','prompt'=>'Seleccione']) ?>
+                    ArrayHelper::map(UnidadMedida::find()->where(['activo' => '1'])->OrderBy('descripcion')->all(), 'id_unidad_medida', 'descripcion'), ['class'=>'texto texto-corto','prompt'=>'Seleccione']) ?>
             </td> 
             <td>
                 <b>Naturaleza de Gasto *</b><br />
                 <?= Html::activeDropDownList($model, 'id_naturaleza',
-                    ArrayHelper::map(Naturaleza::find()->where(['activo' => '1'])->OrderBy('descripcion')->all(), 'id_naturaleza', 'descripcion', 'id_naturaleza'), ['class'=>'texto texto-corto','prompt'=>'Seleccione']) ?>
+                    ArrayHelper::map(Naturaleza::find()->where(['activo' => '1'])->OrderBy('descripcion')->all(), 'id_naturaleza', 'descripcion'), ['class'=>'texto texto-corto','prompt'=>'Seleccione']) ?>
             </td> 
             <td colspan="2">
                 <b>Rubro / Item *</b><br />
                 <input id="d_nombre" maxlength="120" class="texto texto-largo" />
             </td> 
         </tr>
-        <tr>
+        <tr height="70">
             <td>
                 <b>Fila</b><br />
                 <input id="d_fila" maxlength="5" class="texto texto-xc" readonly="true" />

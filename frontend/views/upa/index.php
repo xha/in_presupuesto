@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <center>
         <?= Html::a('Actualizar '.$titulo, ['upa/create?tipo='.$tipo.'&titulo='.$titulo], ['class' => 'btn btn-success']); ?>
     </center>
-
+    <br />
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,

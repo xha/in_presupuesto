@@ -4,7 +4,7 @@ return [
         'db' => [
             'class' => 'yii\db\Connection',
             //'dsn' => 'mysql:host=localhost;dbname=web_innova',
-            'dsn' => 'sqlsrv:server=localhost;Database=AEBPLAG', // MS SQL Server, dblib driver
+            'dsn' => 'sqlsrv:server=localhost;Database=AEBOLIPUERTOS', // MS SQL Server, dblib driver
             'username' => 'sa',
             'password' => 'sql2008SA',
             'charset' => 'utf8',

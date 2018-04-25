@@ -9,15 +9,15 @@ use yii\helpers\Html;
 if (isset($_GET['tipo'])==1) {
     $tipo = $_GET['tipo'];
 } else {
-    $tipo = 'F';
+    $tipo = 'M';
 }
 
 switch ($tipo) {
     case 'B': $titulo = 'Anteproyecto';
     break;
-    case 'M': $titulo = 'Modificación';
+    case 'A': $titulo = 'Asignación';
     break;
-    default: $titulo = 'Asignación';
+    default: $titulo = 'Modificación';
 }
 
 $this->title = 'Actualizar '.$titulo;
@@ -28,6 +28,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'partida' => $partida,
+        'clasificacion' => $clasificacion,
     ]) ?>
 
 </div>

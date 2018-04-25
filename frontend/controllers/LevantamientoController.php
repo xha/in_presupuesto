@@ -188,7 +188,7 @@ class LevantamientoController extends Controller
             //Fila	Item	Partida	Clasificación	UM	Naturaleza	Mes	Cantidad	Precio	Total	Indice	Observación
             //  0   1       2       3               4       5               6       7               8       9       10      11
             $detalle = explode("¬",$_POST['i_items']);
-            for ($i=0;$i < count($detalle) - 1;$i++) {
+            for ($i=0;$i < count($detalle)-1;$i++) {
                 $campos = explode("#",$detalle[$i]);
                 $query = "SELECT descripcion
                     FROM ISPR_Partida

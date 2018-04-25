@@ -3,6 +3,7 @@
 namespace frontend\models;
 
 use Yii;
+use backend\Models\Unidad;
 
 /**
  * This is the model class for table "ISPR_UPA".
@@ -56,16 +57,16 @@ class Upa extends \yii\db\ActiveRecord
     {
         return [
             'id_upa' => 'Id Upa',
-            'id_partida' => 'Id Partida',
-            'denominacion_partida' => 'Denominacion Partida',
-            'id_clasificacion' => 'Id Clasificacion',
-            'descripcion_clasificacion' => 'Descripcion Clasificacion',
-            'id_unidad' => 'Id Unidad',
+            'id_partida' => 'Partida',
+            'denominacion_partida' => 'Denominación Partida',
+            'id_clasificacion' => 'Clasificación',
+            'descripcion_clasificacion' => 'Descripción Clasificacion',
+            'id_unidad' => 'Unidad',
             'monto' => 'Monto',
             'fecha' => 'Fecha',
             'partida_origen' => 'Partida Origen',
-            'asignacion' => 'Asignacion',
-            'tipo_operacion' => 'Tipo Operacion',
+            'asignacion' => 'Asignación',
+            'tipo_operacion' => 'Tipo Operación',
         ];
     }
 

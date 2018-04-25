@@ -64,16 +64,49 @@ class UpaController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
+    public function actionBuscaClasificacion() {
+        $connection = \Yii::$app->db;
+        $clasificacion = array();
+        /********************** CLASIFICACION ***************************************/
+        $query = "SELECT c.id_clasificacion,c.descripcion 
+                FROM ISPR_Clasificacion c, ISPR_ClasificacionUnidad u 
+                where c.activo=1 and c.id_clasificacion=u.id_clasificacion
+                order by c.id_clasificacion";
+        $data1 = $connection->createCommand($query)->queryAll();
+        
+        for($i=0;$i<count($data1);$i++) {
+            $clasificacion[]= $data1[$i]['id_clasificacion']." - ".$data1[$i]['descripcion'];
+        }
+    }
+    
+    public function actionBuscaPartida() {
+        $connection = \Yii::$app->db;
+        $partida = array();
+        /********************** PARTIDAS ***************************************/
+        $query = "SELECT id_partida FROM ISPR_Partida where activo=1 and partida like '4%' and movimiento=1 order by id_partida desc";
+        $data1 = $connection->createCommand($query)->queryAll();
+        
+        for($i=0;$i<count($data1);$i++) {
+            $partida[]= $data1[$i]['id_partida'];
+        }
+        
+        return $partida;
+    }
+    
     public function actionCreate()
     {
         $model = new Upa();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $connection = \Yii::$app->db;
+        
+        if ($model->load(Yii::$app->request->post())) {
+            $model->save();
             return $this->redirect(['view', 'id' => $model->id_upa]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'partida' => $partida,
+            'clasificacion' => $clasificacion,
         ]);
     }
 

@@ -81,9 +81,7 @@ input[readonly] {
 }
 
 .inicial00 {
-    width: 95%;
-    float: left;
-    overflow-x: scroll;
+    width: 99%;
 }
 
 .inicial_1 {
@@ -98,8 +96,7 @@ input[readonly] {
 }
 
 .inicial11 {
-    width: 90%;
-    overflow-x: scroll;
+    width: 85%;
 }
 
 .inicial_em0 {
@@ -117,7 +114,7 @@ input[readonly] {
 }
 
 .inicial_em2 {
-    width: 65em;
+    width: 99%;
     float: left;
 }
 
@@ -365,7 +362,7 @@ a {
 
 .tablas th {
     font-weight: bold;
-    background-color: #DD4B39;
+    background-color: #3c8dbc;
     color: #FFF;
     text-transform: uppercase;
     font-size: 12px;
@@ -381,7 +378,7 @@ a {
 }
 
 .tablas tr:nth-child(odd) {
-    background-color:#fff9f9;
+    background-color:#f8f8f8;/*#f5fafc*/
 }
 .tablas tr:nth-child(even) {
     background-color:#FFF;
