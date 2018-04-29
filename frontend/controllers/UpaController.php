@@ -145,6 +145,13 @@ class UpaController extends Controller
                             and id_clasificacion=".$model->id_clasificacion." and tipo_operacion='".$model->tipo_operacion."' and verificado=".$model->verificado;
                         $connection->createCommand($query)->execute();
                     } else {
+                        $query = "SELECT top(1) *
+                            FROM ISPR_UPA 
+                            WHERE asignacion=".$model->asignacion." and  tipo_operacion='".$model->tipo_operacion."' and verificado=".$model->verificado;
+                        $upa2 = $connection->createCommand($query)->queryOne();
+                        if (count($upa2)>0) {
+                            $model->fecha = $upa2['fecha'];
+                        }
                         $model->save();
                     }
                 }
