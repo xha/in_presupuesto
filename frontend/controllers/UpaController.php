@@ -115,23 +115,38 @@ class UpaController extends Controller
             $model->verificado="0";
             if ($model->observacion=='') $model->observacion=' ';
             $query = "SELECT count(*) as conteo FROM ISPR_UPA 
-                    WHERE asignacion=".$model->asignacion." and tipo_operacion='".$model->tipo_operacion."' and verificado=".$model->verificado;
+                    WHERE asignacion=".$model->asignacion." and tipo_operacion='".$model->tipo_operacion."'";
             $conteo = $connection->createCommand($query)->queryOne();
             
             if ($conteo['conteo'] > 0) {
-                $query = "SELECT *
-                        FROM ISPR_UPA 
-                        WHERE asignacion=".$model->asignacion." and id_unidad=".$model->id_unidad." and id_partida='".$model->id_partida."'
-                        and id_clasificacion=".$model->id_clasificacion." and tipo_operacion='".$model->tipo_operacion."' and verificado=".$model->verificado;
-                $upa = $connection->createCommand($query)->queryAll();
-                
-                if (count($upa)>0) {
-                    $query = "UPDATE ISPR_UPA SET Monto=".$model->monto.",signo=".$model->signo."
-                        WHERE asignacion=".$model->asignacion." and id_unidad=".$model->id_unidad." and id_partida='".$model->id_partida."'
-                        and id_clasificacion=".$model->id_clasificacion." and tipo_operacion='".$model->tipo_operacion."' and verificado=".$model->verificado;
-                    $connection->createCommand($query)->execute();
+                $query = "SELECT count(*) as conteo FROM ISPR_UPA 
+                    WHERE asignacion=".$model->asignacion." and tipo_operacion='".$model->tipo_operacion."' and verificado=1";
+                $conteo2 = $connection->createCommand($query)->queryOne();
+            
+                if ($conteo2['conteo']>0) {
+                    $searchModel = new UpaSearch([ 'tipo_operacion' => $model->tipo_operacion]);
+                    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+                    return $this->render('index', [
+                        'searchModel' => $searchModel,
+                        'dataProvider' => $dataProvider,
+                        'tipo' => $model->tipo_operacion,
+                    ]);
                 } else {
-                    $model->save();
+                    $query = "SELECT *
+                            FROM ISPR_UPA 
+                            WHERE asignacion=".$model->asignacion." and id_unidad=".$model->id_unidad." and id_partida='".$model->id_partida."'
+                            and id_clasificacion=".$model->id_clasificacion." and tipo_operacion='".$model->tipo_operacion."' and verificado=".$model->verificado;
+                    $upa = $connection->createCommand($query)->queryAll();
+
+                    if (count($upa)>0) {
+                        $query = "UPDATE ISPR_UPA SET Monto=".$model->monto.",signo=".$model->signo."
+                            WHERE asignacion=".$model->asignacion." and id_unidad=".$model->id_unidad." and id_partida='".$model->id_partida."'
+                            and id_clasificacion=".$model->id_clasificacion." and tipo_operacion='".$model->tipo_operacion."' and verificado=".$model->verificado;
+                        $connection->createCommand($query)->execute();
+                    } else {
+                        $model->save();
+                    }
                 }
             } else {
                 $model->save();

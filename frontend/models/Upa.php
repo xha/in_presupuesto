@@ -43,7 +43,7 @@ class Upa extends \yii\db\ActiveRecord
             [['id_partida', 'id_clasificacion', 'descripcion_clasificacion', 'id_unidad', 'asignacion', 'tipo_operacion'], 'required'],
             [['id_partida', 'denominacion_partida', 'descripcion_clasificacion', 'tipo_operacion'], 'string'],
             [['id_clasificacion', 'id_unidad', 'signo'], 'integer'],
-            [['asignacion'], 'integer', 'min' => 2019, 'max' => 2040],
+            [['asignacion'], 'integer', 'min' => 2018, 'max' => 2040],
             [['monto', 'total'], 'number'],
             [['fecha'], 'safe'],
             [['id_clasificacion'], 'exist', 'skipOnError' => true, 'targetClass' => Clasificacion::className(), 'targetAttribute' => ['id_clasificacion' => 'id_clasificacion']],

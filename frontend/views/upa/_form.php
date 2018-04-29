@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\bootstrap\Modal;
 use kartik\date\DatePicker;
+use frontend\models\Upa;
 
 $this->registerJsFile('@web/general.js');
 $this->registerJsFile('@web/js/upa.js'); //col-md-2
@@ -37,7 +38,15 @@ if (isset($_GET['asignacion'])==1) $asignacion = $_GET['asignacion'];
         <tr>
             <td>
                 <b>Asignaci&oacute;n</b><br />
-                <?= $form->field($model, 'asignacion')->textInput(['class' => 'texto texto-ec', 'value'=>$asignacion])->label(false); ?>
+                <?php 
+                    if ($tipo!='M') {
+                        echo $form->field($model, 'asignacion')->textInput(['class' => 'texto texto-ec', 'value'=>$asignacion])->label(false);
+                    } else {
+                        echo $form->field($model, 'asignacion')->dropDownList(ArrayHelper::map(
+                            Upa::findBySql("SELECT asignacion FROM ISPR_UPA where verificado=1 and tipo_operacion='A' Group By asignacion")->all(), 
+                            'asignacion', 'asignacion'), ['class' => 'texto texto-ec','prompt'=>'Seleccione'])->label(false);
+                    }
+                ?>
             </td>
             <td>
                 <b>Clasificaci&oacute;n</b><br />
