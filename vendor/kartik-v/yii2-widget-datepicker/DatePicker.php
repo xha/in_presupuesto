@@ -106,7 +106,8 @@ class DatePicker extends InputWidget
      * @var string additional CSS class that will be appended to the date input `class` within [[options]] and
      * [[options2]]. Defaults to `form-control`. This value can be changed for custom (non Bootstrap) CSS styling.
      */
-    public $addInputCss = 'form-control';
+    //public $addInputCss = 'form-control';
+    public $addInputCss = '';
 
     /**
      * @var array the HTML attributes for the input tag.

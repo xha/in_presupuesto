@@ -39,12 +39,16 @@ class UpaSearch extends Upa
      */
     public function search($params)
     {
-        $query = Upa::find();
+        $query = Upa::findBySql("SELECT tipo_operacion,asignacion,verificado,sum(monto) as total,id_unidad 
+                FROM ISPR_UPA 
+                WHERE tipo_operacion='".$this->tipo_operacion."'
+                GROUP BY tipo_operacion,asignacion,verificado,id_unidad");
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => ['attributes' => ['tipo_operacion', 'monto', 'verificado']]
         ]);
 
         $this->load($params);
@@ -54,7 +58,7 @@ class UpaSearch extends Upa
             // $query->where('0=1');
             return $dataProvider;
         }
-
+        
         // grid filtering conditions
         $query->andFilterWhere(['like', 'tipo_operacion', $this->tipo_operacion]);
 

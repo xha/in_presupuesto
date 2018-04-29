@@ -8,7 +8,7 @@ use frontend\Models\UpaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use yii\helpers\Json;
 /**
  * UpaController implements the CRUD actions for Upa model.
  */
@@ -68,15 +68,14 @@ class UpaController extends Controller
         $connection = \Yii::$app->db;
         $clasificacion = array();
         /********************** CLASIFICACION ***************************************/
-        $query = "SELECT c.id_clasificacion,c.descripcion 
-                FROM ISPR_Clasificacion c, ISPR_ClasificacionUnidad u 
-                where c.activo=1 and c.id_clasificacion=u.id_clasificacion
-                order by c.id_clasificacion";
+        $query = "SELECT * FROM ISPR_Clasificacion where activo=1 order by id_clasificacion,nivel";
         $data1 = $connection->createCommand($query)->queryAll();
         
         for($i=0;$i<count($data1);$i++) {
-            $clasificacion[]= $data1[$i]['id_clasificacion']." - ".$data1[$i]['descripcion'];
+            $clasificacion[]= $data1[$i]['id_clasificacion']." - ".$data1[$i]['codigo']." - ".$data1[$i]['descripcion'];
         }
+        
+        return $clasificacion;
     }
     
     public function actionBuscaPartida() {
@@ -93,20 +92,57 @@ class UpaController extends Controller
         return $partida;
     }
     
+    public function actionBuscaUnidad() {
+        $connection = \Yii::$app->db;
+        $partida = array();
+        /********************** UNIDADES ***************************************/
+        $query = "SELECT * FROM ISPR_Unidad where activo=1 order by id_unidad,nivel,padre desc";
+        $data1 = $connection->createCommand($query)->queryAll();
+        
+        for($i=0;$i<count($data1);$i++) {
+            $unidad[]= $data1[$i]['id_unidad']." - ".$data1[$i]['descripcion'];
+        }
+        
+        return $unidad;
+    }
+    
     public function actionCreate()
     {
         $model = new Upa();
         $connection = \Yii::$app->db;
         
         if ($model->load(Yii::$app->request->post())) {
-            $model->save();
-            return $this->redirect(['view', 'id' => $model->id_upa]);
+            $model->verificado="0";
+            if ($model->observacion=='') $model->observacion=' ';
+            $query = "SELECT count(*) as conteo FROM ISPR_UPA 
+                    WHERE asignacion=".$model->asignacion." and tipo_operacion='".$model->tipo_operacion."' and verificado=".$model->verificado;
+            $conteo = $connection->createCommand($query)->queryOne();
+            
+            if ($conteo['conteo'] > 0) {
+                $query = "SELECT *
+                        FROM ISPR_UPA 
+                        WHERE asignacion=".$model->asignacion." and id_unidad=".$model->id_unidad." and id_partida='".$model->id_partida."'
+                        and id_clasificacion=".$model->id_clasificacion." and tipo_operacion='".$model->tipo_operacion."' and verificado=".$model->verificado;
+                $upa = $connection->createCommand($query)->queryAll();
+                
+                if (count($upa)>0) {
+                    $query = "UPDATE ISPR_UPA SET Monto=".$model->monto.",signo=".$model->signo."
+                        WHERE asignacion=".$model->asignacion." and id_unidad=".$model->id_unidad." and id_partida='".$model->id_partida."'
+                        and id_clasificacion=".$model->id_clasificacion." and tipo_operacion='".$model->tipo_operacion."' and verificado=".$model->verificado;
+                    $connection->createCommand($query)->execute();
+                } else {
+                    $model->save();
+                }
+            } else {
+                $model->save();
+            }
         }
 
         return $this->render('create', [
             'model' => $model,
-            'partida' => $partida,
-            'clasificacion' => $clasificacion,
+            'partida' => $this->actionBuscaPartida(),
+            'clasificacion' => $this->actionBuscaClasificacion(),
+            'unidad' => $this->actionBuscaUnidad(),
         ]);
     }
 
@@ -130,18 +166,9 @@ class UpaController extends Controller
         ]);
     }
 
-    /**
-     * Deletes an existing Upa model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param string $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionDelete($id)
+    public function actionBorrar($id)
     {
         $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
     }
 
     /**
@@ -158,5 +185,50 @@ class UpaController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    /************************************ JSON ************************************************/
+    public function actionBuscarClasificaciones($id) {
+        $extra="";
+        if ($id!="") $extra=' and id_clasificacion='.$id;
+        $connection = \Yii::$app->db;
+
+        $query = "SELECT * FROM ISPR_Clasificacion
+                WHERE activo=1 $extra";
+        $pendientes = $connection->createCommand($query)->queryOne();
+        return Json::encode($pendientes);
+    }
+    
+    public function actionBuscarPartidas($id = null) {
+        $extra="";
+        if ($id!="") $extra=' and id_partida='.$id;
+        $connection = \Yii::$app->db;
+
+        $query = "SELECT * FROM ISPR_Partida
+                WHERE activo=1 $extra";
+        $pendientes = $connection->createCommand($query)->queryOne();
+        return Json::encode($pendientes);
+    }
+    
+    public function actionBuscarUnidades($id = null) {
+        $extra="";
+        if ($id!="") $extra=' and id_unidad='.$id;
+        $connection = \Yii::$app->db;
+
+        $query = "SELECT * FROM ISPR_Unidad
+                WHERE activo=1 $extra";
+        $pendientes = $connection->createCommand($query)->queryOne();
+        return Json::encode($pendientes);
+    }
+    
+    public function actionBuscarDetalle($asignacion,$tipo_operacion) {
+        $connection = \Yii::$app->db;
+
+        $query = "SELECT u.id_partida,u.denominacion_partida,u.id_clasificacion,u.descripcion_clasificacion,u.observacion,
+                u.id_unidad,u.monto,u.signo,u.asignacion,u.tipo_operacion,u.verificado,u.id_upa,un.descripcion as unidad
+                FROM ISPR_Unidad un, ISPR_UPA u
+                WHERE u.id_unidad=un.id_unidad and asignacion='$asignacion' and tipo_operacion='$tipo_operacion'
+                ORDER BY id_partida,id_unidad,id_clasificacion";
+        $pendientes = $connection->createCommand($query)->queryAll();
+        return Json::encode($pendientes);
     }
 }

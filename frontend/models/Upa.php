@@ -16,8 +16,7 @@ use backend\Models\Unidad;
  * @property int $id_unidad
  * @property string $monto
  * @property string $fecha
- * @property string $partida_origen
- * @property int $asignacion
+  * @property int $asignacion
  * @property string $tipo_operacion
  *
  * @property ISPRClasificacion $clasificacion
@@ -28,6 +27,8 @@ class Upa extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    
+    public $total;
     public static function tableName()
     {
         return 'ISPR_UPA';
@@ -40,9 +41,10 @@ class Upa extends \yii\db\ActiveRecord
     {
         return [
             [['id_partida', 'id_clasificacion', 'descripcion_clasificacion', 'id_unidad', 'asignacion', 'tipo_operacion'], 'required'],
-            [['id_partida', 'denominacion_partida', 'descripcion_clasificacion', 'partida_origen', 'tipo_operacion'], 'string'],
-            [['id_clasificacion', 'id_unidad', 'asignacion'], 'integer'],
-            [['monto'], 'number'],
+            [['id_partida', 'denominacion_partida', 'descripcion_clasificacion', 'tipo_operacion'], 'string'],
+            [['id_clasificacion', 'id_unidad', 'signo'], 'integer'],
+            [['asignacion'], 'integer', 'min' => 2019, 'max' => 2040],
+            [['monto', 'total'], 'number'],
             [['fecha'], 'safe'],
             [['id_clasificacion'], 'exist', 'skipOnError' => true, 'targetClass' => Clasificacion::className(), 'targetAttribute' => ['id_clasificacion' => 'id_clasificacion']],
             [['id_partida'], 'exist', 'skipOnError' => true, 'targetClass' => Partida::className(), 'targetAttribute' => ['id_partida' => 'id_partida']],
@@ -64,9 +66,10 @@ class Upa extends \yii\db\ActiveRecord
             'id_unidad' => 'Unidad',
             'monto' => 'Monto',
             'fecha' => 'Fecha',
-            'partida_origen' => 'Partida Origen',
             'asignacion' => 'Asignación',
             'tipo_operacion' => 'Tipo Operación',
+            'Total' => 'Total',
+            'signo' => 'Signo',
         ];
     }
 

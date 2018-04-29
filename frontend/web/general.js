@@ -225,7 +225,7 @@ function add_filas(row, clase, funcion, falso, limite, identi) {
         
         if (falso!="") {
             if (row[parseInt(falso)]=='0') {
-                td[i].style.backgroundColor = '#FFE1E1';
+                td[i].style.backgroundColor = '#EEE';
             } else {
                 td[i].style.backgroundColor = '#FFF';
             } 

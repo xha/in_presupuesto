@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model frontend\Models\Upa */
 
-if (isset($_GET['tipo'])==1) {
-    $tipo = $_GET['tipo'];
+if (isset($_GET['tipo_operacion'])==1) {
+    $tipo = $_GET['tipo_operacion'];
 } else {
     $tipo = 'M';
 }
@@ -30,6 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'partida' => $partida,
         'clasificacion' => $clasificacion,
+        'unidad' => $unidad,
     ]) ?>
 
 </div>
